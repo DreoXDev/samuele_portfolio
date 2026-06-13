@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import SiteShell from '../components/layout/SiteShell.astro'
+import HomeLabHero from '../components/homelab/HomeLabHero.astro'
+import HomeLabArchitecture from '../components/homelab/HomeLabArchitecture.vue'
+import HomeLabServices from '../components/homelab/HomeLabServices.astro'
+import HomeLabDashboardMock from '../components/homelab/HomeLabDashboardMock.astro'
+import Button from '../components/common/Button.astro'
+import Container from '../components/common/Container.astro'
+---
+
+<BaseLayout title="Samuele Poretti — Home Lab" description="Explaining the self-hosted Linux server infrastructure, container networking, and active services.">
+  <SiteShell>
+    <!-- Page Hero -->
+    <HomeLabHero />
+
+    <!-- Interactive Architecture Diagram -->
+    <HomeLabArchitecture client:load />
+
+    <!-- Services Inventory Grid -->
+    <HomeLabServices />
+
+    <!-- Telemetry Monitor -->
+    <HomeLabDashboardMock />
+
+    <!-- Bottom Navigation Section -->
+    <section class="py-16 bg-background-dark/80 text-center border-t border-border-dark/30">
+      <Container>
+        <p class="text-xs text-text-muted font-mono mb-4">// End of Infrastructure Report</p>
+        <Button href="/" variant="outline">
+          Return to Portfolio
+        </Button>
+      </Container>
+    </section>
+  </SiteShell>
+</BaseLayout>

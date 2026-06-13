@@ -1,0 +1,102 @@
+---
+import Card from '../common/Card.astro'
+import Badge from '../common/Badge.astro'
+
+interface Service {
+  name: string
+  category: 'core' | 'network' | 'utility' | 'monitoring'
+  description: string
+  status: 'online' | 'standby' | 'restricted'
+}
+
+const services: Service[] = [
+  {
+    name: 'Ubuntu Server 24.04 LTS',
+    category: 'core',
+    description: 'The foundation OS running on a dedicated low-power x86-64 machine, configured for stable headless operation.',
+    status: 'online'
+  },
+  {
+    name: 'Docker & Compose',
+    category: 'core',
+    description: 'Container engine utilized to package and isolate applications, ensuring consistent execution environments.',
+    status: 'online'
+  },
+  {
+    name: 'Traefik Proxy',
+    category: 'network',
+    description: 'Reverse proxy managing request routing, path matching, SSL certificates, and middleware security policies.',
+    status: 'online'
+  },
+  {
+    name: 'Cloudflare Tunnel',
+    category: 'network',
+    description: 'Cloudflared daemon routing public DNS requests to the local reverse proxy without exposing public IPs.',
+    status: 'online'
+  },
+  {
+    name: 'Tailscale VPN',
+    category: 'network',
+    description: 'WireGuard-based mesh overlay network enabling secure SSH administration and private service access from anywhere.',
+    status: 'online'
+  },
+  {
+    name: 'Prometheus & Grafana',
+    category: 'monitoring',
+    description: 'Metric gathering and visualization suite monitoring CPU, RAM, disk space, and Docker container lifecycles.',
+    status: 'online'
+  },
+  {
+    name: 'n8n Automation',
+    category: 'utility',
+    description: 'Self-hosted workflow automation platform used to connect local webhooks, databases, and cron triggers.',
+    status: 'online'
+  },
+  {
+    name: 'Seafile Private Storage',
+    category: 'utility',
+    description: 'High-performance encrypted cloud storage client for syncing files and documents across multiple devices.',
+    status: 'online'
+  },
+  {
+    name: 'Jellyfin Media Server',
+    category: 'utility',
+    description: 'Open-source media server streaming family media files, bypassing proprietary platforms.',
+    status: 'online'
+  }
+]
+---
+<section class="py-16 border-b border-border-dark/30 bg-background-dark">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Header -->
+    <div class="mb-12 text-center">
+      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-text-main font-mono mb-2">
+        Service Inventory
+      </h2>
+      <p class="text-sm text-text-muted">
+        Operational status of active services running in the home lab.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {services.map((service) => (
+        <Card hoverable={true} class="flex flex-col justify-between h-full border-border-dark/60 bg-surface-dark/40">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <Badge variant="outline" class="uppercase text-[9px]">{service.category}</Badge>
+              <div class="flex items-center gap-1.5 text-[10px] font-mono">
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-emerald-400 uppercase">{service.status}</span>
+              </div>
+            </div>
+            <h3 class="text-base font-bold text-text-main font-mono mb-2">{service.name}</h3>
+            <p class="text-xs text-text-muted leading-relaxed">{service.description}</p>
+          </div>
+        </Card>
+      ))}
+    </div>
+
+  </div>
+</section>

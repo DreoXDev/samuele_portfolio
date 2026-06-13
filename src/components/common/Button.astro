@@ -1,0 +1,38 @@
+---
+interface Props {
+  href?: string
+  target?: string
+  rel?: string
+  variant?: 'primary' | 'secondary' | 'outline'
+  class?: string
+  [x: string]: any
+}
+
+const {
+  href,
+  target,
+  rel,
+  variant = 'primary',
+  class: className = '',
+  ...rest
+} = Astro.props
+
+const baseStyles = 'inline-flex items-center justify-center px-4 py-2 border rounded font-mono text-sm transition-all duration-200 cursor-pointer text-center'
+
+const variantStyles = {
+  primary: 'bg-red-primary border-red-strong text-white hover:bg-red-strong shadow-[0_0_10px_rgba(239,68,68,0.2)] hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]',
+  secondary: 'bg-surface-soft border-border-dark/60 text-text-main hover:bg-border-dark/80',
+  outline: 'bg-transparent border-border-dark/60 text-text-muted hover:border-red-primary/40 hover:text-red-primary hover:shadow-[0_0_8px_rgba(239,68,68,0.1)]'
+}
+
+const Element = href ? 'a' : 'button'
+---
+<Element
+  href={href}
+  target={target}
+  rel={rel}
+  class={`${baseStyles} ${variantStyles[variant]} ${className}`}
+  {...rest}
+>
+  <slot />
+</Element>

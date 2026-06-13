@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import SiteShell from '../components/layout/SiteShell.astro'
+import TerminalLanding from '../components/sections/TerminalLanding.vue'
+import ProjectsEditor from '../components/sections/ProjectsEditor.vue'
+import TimelineSection from '../components/sections/TimelineSection.vue'
+import ContactSection from '../components/sections/ContactSection.astro'
+import ScrollSceneController from '../components/interactive/ScrollSceneController.vue'
+---
+
+<BaseLayout>
+  <SiteShell>
+    <!-- Hydrate client-side Vue components for interactivity -->
+    <TerminalLanding client:load />
+    <ProjectsEditor client:load />
+    <TimelineSection client:load />
+    <ContactSection />
+    <ScrollSceneController client:load />
+  </SiteShell>
+</BaseLayout>

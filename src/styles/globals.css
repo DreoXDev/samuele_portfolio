@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background-dark: #09090b;
+  --color-surface-dark: #111113;
+  --color-surface-soft: #18181b;
+  --color-border-dark: #27272a;
+  --color-text-main: #fafafa;
+  --color-text-muted: #a1a1aa;
+  --color-text-subtle: #71717a;
+  --color-red-primary: #ef4444;
+  --color-red-strong: #dc2626;
+  --color-red-dark: #991b1b;
+  --color-red-glow: rgba(239, 68, 68, 0.25);
+  
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+/* Base custom definitions */
+html,
+body {
+  background-color: #09090b;
+  color: #fafafa;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ef4444;
+}
+
+/* Glow Utilities */
+.shadow-red-glow {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.15);
+}
+
+.shadow-red-glow-strong {
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.35);
+}
+
+.text-red-glow {
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+/* Custom Animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+/* Terminal log line entry */
+.log-line-enter {
+  opacity: 0;
+  transform: translateY(5px);
+  animation: log-fade-in 0.3s ease forwards;
+}
+
+@keyframes log-fade-in {
+  to {
+    opacity: 0.15;
+    transform: translateY(0);
+  }
+}
+
+/* Keyboard focus rings */
+*:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}

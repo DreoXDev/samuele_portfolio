@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant?: 'default' | 'red' | 'outline' | 'success'
+  class?: string
+}
+
+const { variant = 'default', class: className = '' } = Astro.props
+
+const baseStyles = 'inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono border transition-colors duration-150'
+const variantStyles = {
+  default: 'bg-surface-soft border-border-dark text-text-muted',
+  red: 'bg-red-dark/10 border-red-primary/30 text-red-primary',
+  outline: 'bg-transparent border-border-dark text-text-subtle',
+  success: 'bg-emerald-950/20 border-emerald-500/30 text-emerald-400'
+}
+---
+<span class={`${baseStyles} ${variantStyles[variant]} ${className}`}>
+  <slot />
+</span>
