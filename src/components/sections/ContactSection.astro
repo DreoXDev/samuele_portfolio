@@ -1,66 +1,465 @@
 ---
+import { existsSync } from 'node:fs'
 import { siteConfig } from '../../data/site'
-import Card from '../common/Card.astro'
-import Button from '../common/Button.astro'
+import AppTabs from '../navigation/AppTabs.astro'
+
+const cvHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}${siteConfig.cvPath}`
+const cvFileExists = existsSync(new URL('../../../public/cv/samuele-poretti-cv.pdf', import.meta.url))
+const currentYear = new Date().getFullYear()
 ---
-<section id="contact" class="scroll-section py-20 bg-background-dark border-b border-border-dark/30">
-  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-    
-    <!-- Section Header -->
-    <div class="mb-12 text-center">
-      <div class="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-wider text-red-primary select-none mb-3">
-        <span>[</span>
-        <span class="text-red-primary">03</span>
-        <span class="text-text-subtle">.</span>
-        <span class="text-text-main uppercase">Contact</span>
-        <span>]</span>
+
+<section
+  id="contact"
+  class="scroll-section contact-note-section"
+  data-app="contact"
+  data-frame="contact"
+  aria-label="Contact note"
+>
+  <div class="contact-note-shell" data-contact-boot="window">
+    <header class="contact-note-topbar">
+      <div class="contact-note-controls" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-text-main font-mono mt-2">
-        ~/get_in_touch
-      </h2>
-      <p class="text-sm text-text-muted mt-2">
-        Let's work together. I am currently open to internships, collaborations, and junior developer positions.
-      </p>
+
+      <AppTabs active="contact" />
+
+      <div class="contact-note-path">vault/contact/samuele-poretti.md</div>
+    </header>
+
+    <div class="contact-note-workspace">
+      <div class="contact-note-page-scroll" data-contact-scroll>
+        <main class="contact-note-page" data-contact-boot="page">
+          <p class="contact-note-breadcrumb" data-contact-boot="block">portfolio / contact.md</p>
+
+          <div class="contact-note-file-header" data-contact-boot="block">
+            <span class="contact-note-file-dot" aria-hidden="true"></span>
+            <span>contact.md</span>
+            <span class="contact-note-file-status">saved</span>
+          </div>
+
+          <h2 class="contact-note-title" data-contact-boot="block"><span aria-hidden="true">#</span> Contact</h2>
+
+          <p class="contact-note-intro" data-contact-boot="block">
+            I'm always open to talking about software projects, web interfaces, self-hosted systems,
+            automation tools and collaboration opportunities.
+          </p>
+
+          <section class="contact-note-block" data-contact-boot="block">
+            <h2>## Links</h2>
+            <div class="contact-links">
+              <a class="contact-link" href={`mailto:${siteConfig.email}`}>
+                <span class="contact-link-label">Email</span>
+                <span class="contact-link-value">{siteConfig.email}</span>
+                <span class="contact-link-arrow" aria-hidden="true">-&gt;</span>
+              </a>
+              <a class="contact-link" href={siteConfig.github} target="_blank" rel="noopener noreferrer">
+                <span class="contact-link-label">GitHub</span>
+                <span class="contact-link-value">DreoXDev</span>
+                <span class="contact-link-arrow" aria-hidden="true">-&gt;</span>
+              </a>
+              <a class="contact-link" href={siteConfig.githubInstitutional} target="_blank" rel="noopener noreferrer">
+                <span class="contact-link-label">GitHub</span>
+                <span class="contact-link-value">SPoretti</span>
+                <span class="contact-link-arrow" aria-hidden="true">-&gt;</span>
+              </a>
+              <a class="contact-link" href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer">
+                <span class="contact-link-label">LinkedIn</span>
+                <span class="contact-link-value">Samuele Poretti</span>
+                <span class="contact-link-arrow" aria-hidden="true">-&gt;</span>
+              </a>
+              {cvFileExists ? (
+                <a class="contact-link" href={cvHref} target="_blank" rel="noopener noreferrer">
+                  <span class="contact-link-label">CV</span>
+                  <span class="contact-link-value">Download resume</span>
+                  <span class="contact-link-arrow" aria-hidden="true">-&gt;</span>
+                </a>
+              ) : (
+                <div class="contact-link contact-link-disabled" aria-disabled="true">
+                  <span class="contact-link-label">CV</span>
+                  <span class="contact-link-value">Add PDF at public/cv/samuele-poretti-cv.pdf</span>
+                  <span class="contact-link-arrow" aria-hidden="true">--</span>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section class="contact-note-block" data-contact-boot="block">
+            <h2>## Current focus</h2>
+            <ul class="contact-focus-list">
+              <li>Web interfaces</li>
+              <li>Android apps</li>
+              <li>Self-hosted tools</li>
+              <li>Clean developer workflows</li>
+            </ul>
+          </section>
+
+          <footer class="contact-footer" data-contact-boot="block">
+            <div class="contact-footer-content">
+              <p>Built with Astro and deployed as a static personal portfolio.</p>
+              <p>&copy; {currentYear} {siteConfig.author}. All rights reserved.</p>
+            </div>
+            <div class="contact-footer-meta" aria-label="Portfolio metadata">
+              <span>~/portfolio</span>
+              <span>last frame</span>
+              <span>Milan, Italy</span>
+            </div>
+          </footer>
+        </main>
+      </div>
     </div>
-
-    <!-- Contact Panel Mockup -->
-    <Card hoverable={true} class="max-w-2xl mx-auto shadow-xl">
-      <!-- Terminal Header -->
-      <div class="flex items-center justify-between border-b border-border-dark/60 pb-3 mb-4 select-none">
-        <div class="text-xs font-mono text-red-primary">HTTP/1.1 200 OK</div>
-        <div class="text-[10px] font-mono text-text-subtle">content-type: application/json</div>
-      </div>
-
-      <!-- JSON content -->
-      <div class="font-mono text-xs sm:text-sm text-text-muted leading-relaxed mb-6 overflow-x-auto whitespace-pre">
-<span class="text-purple-400">{</span>
-  <span class="text-emerald-400">"status"</span>: <span class="text-amber-500">"available"</span>,
-  <span class="text-emerald-400">"location"</span>: <span class="text-amber-500">"{siteConfig.location}"</span>,
-  <span class="text-emerald-400">"email"</span>: <span class="text-amber-500">"{siteConfig.email}"</span>,
-  <span class="text-emerald-400">"links"</span>: <span class="text-purple-400">[</span>
-    <span class="text-amber-500">"<a href={siteConfig.github} target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-red-primary">{siteConfig.github}</a>"</span>,
-    <span class="text-amber-500">"<a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-red-primary">{siteConfig.linkedin}</a>"</span>
-  <span class="text-purple-400">]</span>,
-  <span class="text-emerald-400">"opportunities"</span>: <span class="text-purple-400">[</span>
-    <span class="text-amber-500">"Internships"</span>,
-    <span class="text-amber-500">"Junior Developer Positions"</span>,
-    <span class="text-amber-500">"Open Source Collaborations"</span>
-  <span class="text-purple-400">]</span>
-<span class="text-purple-400">}</span></div>
-
-      <!-- Action CTAs -->
-      <div class="flex flex-wrap gap-4 justify-center sm:justify-start">
-        <Button href={`mailto:${siteConfig.email}`} variant="primary" class="w-full sm:w-auto">
-          Send Email
-        </Button>
-        <Button href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" variant="outline" class="w-full sm:w-auto">
-          LinkedIn Profile
-        </Button>
-        <Button href={siteConfig.cvPath} target="_blank" variant="secondary" class="w-full sm:w-auto">
-          Download CV
-        </Button>
-      </div>
-    </Card>
-
   </div>
 </section>
+
+<style>
+  .contact-note-section {
+    box-sizing: border-box;
+    min-height: 100svh;
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
+    color: #f4f4f5;
+    background:
+      radial-gradient(circle at 76% 18%, rgba(239, 68, 68, 0.1), transparent 28rem),
+      linear-gradient(135deg, #08080a 0%, #101014 52%, #09090b 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .contact-note-shell {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: calc(100svh - clamp(1.5rem, 3vw, 2.5rem));
+    min-height: 41rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.85rem;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+      rgba(9, 9, 12, 0.94);
+    background-size: 28px 28px, 28px 28px, auto;
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.52);
+  }
+
+  .contact-note-topbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 3.25rem;
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+    backdrop-filter: blur(18px);
+  }
+
+  .contact-note-controls {
+    display: inline-flex;
+    gap: 0.45rem;
+  }
+
+  .contact-note-controls span {
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .contact-note-controls span:nth-child(1) {
+    background: #ff5f57;
+  }
+
+  .contact-note-controls span:nth-child(2) {
+    background: #febc2e;
+  }
+
+  .contact-note-controls span:nth-child(3) {
+    background: #28c840;
+  }
+
+  .contact-note-path {
+    max-width: 18rem;
+    overflow: hidden;
+    color: #8b8b94;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-note-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .contact-note-page-scroll {
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: rgba(239, 68, 68, 0.42) rgba(255, 255, 255, 0.04);
+    scrollbar-width: thin;
+  }
+
+  .contact-note-page {
+    width: min(100%, 60rem);
+    min-height: 100%;
+    margin: 0 auto;
+    padding: clamp(1.8rem, 4.8vw, 4.5rem);
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.038), rgba(255, 255, 255, 0.014)),
+      rgba(9, 9, 12, 0.28);
+  }
+
+  .contact-note-breadcrumb {
+    margin: 0 0 1.3rem;
+    color: #71717a;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .contact-note-file-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+    margin-bottom: 1.1rem;
+    padding: 0 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    color: #a1a1aa;
+    background: rgba(255, 255, 255, 0.026);
+    font-size: 0.72rem;
+    font-weight: 850;
+  }
+
+  .contact-note-file-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: #ff6b6b;
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+  }
+
+  .contact-note-file-status {
+    color: #71717a;
+  }
+
+  .contact-note-title {
+    margin: 0 0 1rem;
+    color: #f8fafc;
+    font-size: clamp(3rem, 7vw, 5.6rem);
+    font-weight: 950;
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .contact-note-intro,
+  .contact-note-block p {
+    max-width: 48rem;
+    margin: 0;
+    color: #b8b8c0;
+    font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+    line-height: 1.75;
+  }
+
+  .contact-note-block {
+    margin-top: clamp(1.6rem, 3vw, 2.4rem);
+  }
+
+  .contact-note-block h2 {
+    margin: 0 0 0.9rem;
+    color: #ff6b6b;
+    font-size: 0.86rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .contact-links {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .contact-link {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.65rem;
+    color: #f4f4f5;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.026);
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .contact-link-disabled {
+    cursor: not-allowed;
+  }
+
+  .contact-link:hover,
+  .contact-link:focus-visible {
+    border-color: rgba(255, 75, 75, 0.55);
+    background: rgba(255, 75, 75, 0.065);
+    box-shadow: 0 0 28px rgba(239, 68, 68, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .contact-link-label {
+    color: #ff6b6b;
+    font-size: 0.72rem;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+
+  .contact-link-value {
+    min-width: 0;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    color: #f8fafc;
+    font-size: 0.86rem;
+    font-weight: 850;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-link-arrow {
+    color: #a1a1aa;
+    font-weight: 950;
+  }
+
+  .contact-focus-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact-focus-list li {
+    padding: 0.8rem 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.6rem;
+    color: #d4d4d8;
+    font-size: 0.82rem;
+    font-weight: 850;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .contact-footer {
+    margin-top: clamp(3rem, 8vh, 6rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a1a1aa;
+    font-size: 0.82rem;
+  }
+
+  .contact-footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem 1.2rem;
+  }
+
+  .contact-footer-content p {
+    margin: 0;
+  }
+
+  .contact-footer-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+  }
+
+  .contact-footer-meta span {
+    padding: 0.24rem 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    color: #8b8b94;
+    background: rgba(255, 255, 255, 0.025);
+    font-size: 0.68rem;
+    font-weight: 850;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 899px) {
+    .contact-note-section {
+      padding: 0;
+    }
+
+    .contact-note-shell {
+      height: auto;
+      min-height: 100svh;
+      border-width: 0 0 1px;
+      border-radius: 0;
+    }
+
+    .contact-note-topbar {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .contact-note-path {
+      grid-column: 1 / -1;
+      max-width: none;
+    }
+
+    .contact-note-workspace {
+      grid-template-columns: 1fr;
+      height: auto;
+      overflow: visible;
+    }
+
+    .contact-note-page-scroll {
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .contact-note-page {
+      width: 100%;
+      min-height: auto;
+      border: 0;
+      padding: 1.5rem;
+    }
+
+    .contact-link {
+      grid-template-columns: 1fr auto;
+      gap: 0.35rem 1rem;
+    }
+
+    .contact-link-label {
+      grid-column: 1 / -1;
+    }
+
+    .contact-focus-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .contact-note-title {
+      font-size: clamp(2.5rem, 16vw, 3.4rem);
+    }
+
+    .contact-link-value {
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+</style>

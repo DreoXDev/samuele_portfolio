@@ -1,20 +1,25 @@
 ---
-import { siteConfig } from '../../data/site'
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/'
+const isHomeLab = currentPath === '/home-lab'
+
+const navLinkBase = 'text-text-muted hover:text-red-primary hover:text-red-glow transition-all duration-200'
 ---
 <header class="sticky top-0 z-50 w-full border-b border-border-dark/60 bg-background-dark/80 backdrop-blur-md">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex h-16 items-center justify-between">
-      <div class="flex items-center">
+    <div class="flex min-h-16 flex-col items-start justify-center gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-0">
+      <div class="flex items-center shrink-0">
         <a href="/" class="group flex items-center font-bold text-lg tracking-tight text-text-main hover:text-red-primary transition-colors duration-200">
           <span class="text-red-primary group-hover:text-text-main transition-colors duration-200">~</span>/samuele-poretti
         </a>
       </div>
-      <nav class="flex space-x-6 text-sm font-medium">
-        <a href="/#projects" class="text-text-muted hover:text-red-primary hover:text-red-glow transition-all duration-200">_projects</a>
-        <a href="/#timeline" class="text-text-muted hover:text-red-primary hover:text-red-glow transition-all duration-200">_timeline</a>
-        <a href="/home-lab" class="text-text-muted hover:text-red-primary hover:text-red-glow transition-all duration-200">_home_lab</a>
-        <a href="/#contact" class="text-text-muted hover:text-red-primary hover:text-red-glow transition-all duration-200">_contact</a>
-      </nav>
+      {!isHomeLab && (
+        <nav class="flex w-full gap-5 overflow-x-auto pb-1 text-sm font-medium sm:w-auto sm:gap-6 sm:pb-0">
+          <a href="/#projects" class={navLinkBase}>_projects</a>
+          <a href="/#timeline" class={navLinkBase}>_timeline</a>
+          <a href="/home-lab" class={navLinkBase}>_home_lab</a>
+          <a href="/#contact" class={navLinkBase}>_contact</a>
+        </nav>
+      )}
     </div>
   </div>
 </header>

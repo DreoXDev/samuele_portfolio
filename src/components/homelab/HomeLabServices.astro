@@ -1,12 +1,10 @@
 ---
-import Card from '../common/Card.astro'
 import Badge from '../common/Badge.astro'
 
 interface Service {
   name: string
   category: 'core' | 'network' | 'utility' | 'monitoring'
   description: string
-  status: 'online' | 'standby' | 'restricted'
 }
 
 const services: Service[] = [
@@ -14,89 +12,104 @@ const services: Service[] = [
     name: 'Ubuntu Server 24.04 LTS',
     category: 'core',
     description: 'The foundation OS running on a dedicated low-power x86-64 machine, configured for stable headless operation.',
-    status: 'online'
   },
   {
     name: 'Docker & Compose',
     category: 'core',
-    description: 'Container engine utilized to package and isolate applications, ensuring consistent execution environments.',
-    status: 'online'
+    description: 'Container engine used to package and isolate applications, keeping execution environments consistent.',
   },
   {
     name: 'Traefik Proxy',
     category: 'network',
-    description: 'Reverse proxy managing request routing, path matching, SSL certificates, and middleware security policies.',
-    status: 'online'
+    description: 'Reverse proxy managing request routing, host matching, TLS and middleware security policies.',
   },
   {
     name: 'Cloudflare Tunnel',
     category: 'network',
-    description: 'Cloudflared daemon routing public DNS requests to the local reverse proxy without exposing public IPs.',
-    status: 'online'
+    description: 'Cloudflared daemon routing public DNS requests to the local reverse proxy without exposing router ports.',
   },
   {
     name: 'Tailscale VPN',
     category: 'network',
-    description: 'WireGuard-based mesh overlay network enabling secure SSH administration and private service access from anywhere.',
-    status: 'online'
+    description: 'WireGuard-based mesh overlay network for private administration and internal service access.',
   },
   {
     name: 'Prometheus & Grafana',
     category: 'monitoring',
-    description: 'Metric gathering and visualization suite monitoring CPU, RAM, disk space, and Docker container lifecycles.',
-    status: 'online'
+    description: 'Metric gathering and dashboarding suite used to inspect system and Docker service health.',
   },
   {
     name: 'n8n Automation',
     category: 'utility',
-    description: 'Self-hosted workflow automation platform used to connect local webhooks, databases, and cron triggers.',
-    status: 'online'
+    description: 'Self-hosted workflow automation platform used to connect webhooks, databases and scheduled jobs.',
   },
   {
     name: 'Seafile Private Storage',
     category: 'utility',
-    description: 'High-performance encrypted cloud storage client for syncing files and documents across multiple devices.',
-    status: 'online'
+    description: 'Private cloud storage service for syncing documents and files across multiple devices.',
   },
   {
     name: 'Jellyfin Media Server',
     category: 'utility',
-    description: 'Open-source media server streaming family media files, bypassing proprietary platforms.',
-    status: 'online'
-  }
+    description: 'Open-source media server for streaming personal media from the local infrastructure.',
+  },
+]
+
+const securityNotes = [
+  'Administrative access is kept private through Tailscale instead of public SSH exposure.',
+  'Public services pass through a tunnel and reverse proxy layer before reaching containers.',
+  'Services are isolated with Docker networks and composed as reproducible units.',
+  'Sensitive host details, ports, paths, credentials and firewall rules are intentionally omitted.',
 ]
 ---
+
 <section class="py-16 border-b border-border-dark/30 bg-background-dark">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    
-    <!-- Section Header -->
-    <div class="mb-12 text-center">
-      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-text-main font-mono mb-2">
-        Service Inventory
+    <div class="mb-10 max-w-3xl">
+      <div class="mb-3 text-[10px] font-mono uppercase tracking-[0.26em] text-red-primary">
+        02 - Stack
+      </div>
+      <h2 class="mb-3 text-xl font-bold tracking-tight text-text-main font-mono sm:text-2xl">
+        Services & Stack
       </h2>
-      <p class="text-sm text-text-muted">
-        Operational status of active services running in the home lab.
+      <p class="text-sm leading-relaxed text-text-muted">
+        Static inventory of the main tools and services used in the lab, focused on
+        the infrastructure choices that make the setup maintainable.
       </p>
     </div>
 
-    <!-- Services Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {services.map((service) => (
-        <Card hoverable={true} class="flex flex-col justify-between h-full border-border-dark/60 bg-surface-dark/40">
-          <div>
-            <div class="flex items-center justify-between mb-4">
-              <Badge variant="outline" class="uppercase text-[9px]">{service.category}</Badge>
-              <div class="flex items-center gap-1.5 text-[10px] font-mono">
-                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-emerald-400 uppercase">{service.status}</span>
-              </div>
-            </div>
-            <h3 class="text-base font-bold text-text-main font-mono mb-2">{service.name}</h3>
-            <p class="text-xs text-text-muted leading-relaxed">{service.description}</p>
+        <article class="flex h-full flex-col border border-border-dark/60 bg-surface-dark/40 p-5 transition-all duration-200 hover:border-red-primary/30 hover:bg-surface-dark/70">
+          <div class="mb-4">
+            <Badge variant="outline" class="uppercase text-[9px]">{service.category}</Badge>
           </div>
-        </Card>
+          <h3 class="mb-2 text-base font-bold text-text-main font-mono">{service.name}</h3>
+          <p class="text-xs leading-relaxed text-text-muted">{service.description}</p>
+        </article>
       ))}
     </div>
 
+    <div class="mt-12 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+      <div class="border border-border-dark/60 bg-surface-dark/45 p-6">
+        <div class="mb-3 text-[10px] font-mono uppercase tracking-[0.24em] text-red-primary">
+          03 - Security
+        </div>
+        <h2 class="mb-3 text-xl font-bold text-text-main font-mono">Security & Routing Notes</h2>
+        <p class="text-sm leading-relaxed text-text-muted">
+          The setup avoids exposing unnecessary ports publicly. Administrative paths stay
+          private, while public services are routed through a proxy and tunnel layer.
+        </p>
+      </div>
+
+      <div class="grid gap-3 sm:grid-cols-2">
+        {securityNotes.map((note) => (
+          <div class="border border-border-dark/50 bg-background-dark/70 p-4">
+            <div class="mb-3 h-px w-10 bg-red-primary/70"></div>
+            <p class="text-xs leading-relaxed text-text-muted">{note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 </section>

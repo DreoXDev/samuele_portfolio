@@ -1,0 +1,157 @@
+---
+import TerminalTabs from './TerminalTabs.astro'
+import TerminalStream from './TerminalStream.vue'
+import HeroIdentity from './HeroIdentity.astro'
+---
+
+<div class="terminal-window">
+  <header class="terminal-titlebar" data-boot="chrome">
+    <div class="window-controls" data-boot="controls" aria-hidden="true">
+      <span class="control control-red"></span>
+      <span class="control control-yellow"></span>
+      <span class="control control-green"></span>
+    </div>
+
+    <TerminalTabs />
+
+    <div class="terminal-title" data-boot="titlebar-label">samuele@portfolio:~/dreox</div>
+  </header>
+
+  <div class="terminal-body">
+    <TerminalStream client:load />
+    <div class="terminal-body-vignette" aria-hidden="true"></div>
+    <HeroIdentity />
+  </div>
+</div>
+
+<style>
+  .terminal-window {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: clamp(0.8rem, 1.8vw, 1.1rem);
+    background:
+      linear-gradient(180deg, rgba(22, 22, 28, 0.98), rgba(8, 8, 10, 0.96)),
+      #101014;
+    box-shadow:
+      0 30px 120px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .terminal-titlebar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.6rem;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+    background:
+      linear-gradient(180deg, rgba(28, 28, 34, 0.96), rgba(17, 17, 20, 0.96));
+  }
+
+  .window-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 0.25rem;
+  }
+
+  .control {
+    width: 0.78rem;
+    height: 0.78rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.22);
+  }
+
+  .control-red {
+    background: #ff5f56;
+  }
+
+  .control-yellow {
+    background: #ffbd2e;
+  }
+
+  .control-green {
+    background: #27c93f;
+  }
+
+  .terminal-title {
+    color: #71717a;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .terminal-body {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      #050506;
+    background-size: 100% 3px;
+  }
+
+  .terminal-body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 48%, rgba(255, 59, 59, 0.13), transparent 32%),
+      radial-gradient(circle at 50% 50%, rgba(5, 5, 6, 0.72), rgba(5, 5, 6, 0.4) 52%, rgba(5, 5, 6, 0.12) 78%, transparent 100%);
+  }
+
+  .terminal-body-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(5, 5, 6, 0.1), transparent 18%, transparent 70%, rgba(5, 5, 6, 0.72)),
+      radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.35) 100%);
+  }
+
+  @media (max-width: 760px) {
+    .terminal-window {
+      height: 100%;
+      border-radius: 0.8rem;
+    }
+
+    .terminal-titlebar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem 0.85rem;
+      min-height: auto;
+      padding: 0.75rem;
+    }
+
+    .terminal-title {
+      margin-left: auto;
+      font-size: 0.65rem;
+    }
+
+    .terminal-body {
+      align-items: center;
+      justify-content: center;
+      padding-top: clamp(1.5rem, 9vh, 4rem);
+      padding-inline: 1.25rem;
+    }
+
+    .terminal-body::before {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255, 59, 59, 0.12), transparent 36%),
+        radial-gradient(circle at 50% 50%, rgba(5, 5, 6, 0.76), rgba(5, 5, 6, 0.44) 60%, rgba(5, 5, 6, 0.16) 100%);
+    }
+  }
+</style>

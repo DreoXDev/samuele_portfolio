@@ -1,156 +1,349 @@
 <template>
-  <section class="py-16 border-b border-border-dark/30 bg-background-dark/50">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      
-      <!-- Section Header -->
-      <div class="mb-12 text-center">
-        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-text-main font-mono mb-2">
-          Infrastructure Architecture Map
-        </h2>
-        <p class="text-xs text-text-muted">
-          Interactive diagram. Click or hover on nodes to learn more.
+  <section class="architecture-section">
+    <div class="architecture-shell">
+      <div class="section-heading">
+        <div class="section-kicker">01 - Architecture</div>
+        <h2>Infrastructure Architecture Map</h2>
+        <p>
+          Interactive map of the request path and service groups. Hover or click a node
+          to inspect its role in the infrastructure.
         </p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-        <!-- SVG Diagram Column (2/3 width) -->
-        <div class="lg:col-span-2 border border-border-dark/60 bg-surface-dark/40 rounded-lg p-4 flex items-center justify-center min-h-[350px]">
-          <svg viewBox="0 0 600 320" class="w-full max-w-lg h-auto text-text-main select-none font-mono">
-            <!-- Definitions for markers and filters -->
+      <div class="architecture-layout">
+        <div class="architecture-panel" aria-label="Home lab infrastructure diagram">
+          <svg viewBox="0 0 680 360" class="diagram" role="img" aria-labelledby="architecture-title">
+            <title id="architecture-title">Home lab architecture diagram</title>
             <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M 0 2 L 8 5 L 0 8 z" fill="#71717A" />
+              <marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 2 L 8 5 L 0 8 z" fill="#71717a" />
               </marker>
             </defs>
 
-            <!-- Node: Internet -->
-            <g 
-              class="cursor-pointer group" 
-              @mouseenter="selectedNode = 'internet'"
-              @click="selectedNode = 'internet'"
+            <path class="diagram-link" d="M 340 62 L 340 94" marker-end="url(#arrow)" />
+            <path class="diagram-link" d="M 340 148 L 340 184" marker-end="url(#arrow)" />
+            <path class="diagram-link" d="M 340 238 L 340 260 L 120 260 L 120 284" marker-end="url(#arrow)" />
+            <path class="diagram-link" d="M 340 238 L 340 284" marker-end="url(#arrow)" />
+            <path class="diagram-link" d="M 340 238 L 340 260 L 560 260 L 560 284" marker-end="url(#arrow)" />
+
+            <g
+              v-for="node in diagramNodes"
+              :key="node.id"
+              class="diagram-node"
+              :class="{ 'is-selected': selectedNode === node.id }"
+              tabindex="0"
+              role="button"
+              :aria-label="`Show ${node.label} details`"
+              @mouseenter="selectedNode = node.id"
+              @focus="selectedNode = node.id"
+              @click="selectedNode = node.id"
             >
-              <rect x="250" y="10" width="100" height="40" rx="4" fill="#18181b" :stroke="selectedNode === 'internet' ? '#ef4444' : '#27272a'" stroke-width="1.5" class="transition-all duration-200" />
-              <text x="300" y="35" text-anchor="middle" font-size="11" class="fill-text-main font-bold">Internet</text>
-            </g>
-
-            <!-- Connection 1 -->
-            <line x1="300" y1="50" x2="300" y2="85" stroke="#27272a" stroke-width="1.5" marker-end="url(#arrow)" />
-
-            <!-- Node: Cloudflare Tunnel -->
-            <g 
-              class="cursor-pointer group" 
-              @mouseenter="selectedNode = 'cloudflare'"
-              @click="selectedNode = 'cloudflare'"
-            >
-              <rect x="200" y="90" width="200" height="40" rx="4" fill="#18181b" :stroke="selectedNode === 'cloudflare' ? '#ef4444' : '#27272a'" stroke-width="1.5" class="transition-all duration-200" />
-              <text x="300" y="114" text-anchor="middle" font-size="11" class="fill-text-main font-bold">Cloudflare Tunnel</text>
-            </g>
-
-            <!-- Connection 2 -->
-            <line x1="300" y1="130" x2="300" y2="165" stroke="#27272a" stroke-width="1.5" marker-end="url(#arrow)" />
-
-            <!-- Node: Traefik Reverse Proxy -->
-            <g 
-              class="cursor-pointer group" 
-              @mouseenter="selectedNode = 'traefik'"
-              @click="selectedNode = 'traefik'"
-            >
-              <rect x="180" y="170" width="240" height="40" rx="4" fill="#18181b" :stroke="selectedNode === 'traefik' ? '#ef4444' : '#27272a'" stroke-width="1.5" class="transition-all duration-200" />
-              <text x="300" y="194" text-anchor="middle" font-size="11" class="fill-text-main font-bold">Traefik Reverse Proxy</text>
-            </g>
-
-            <!-- Branches from Traefik -->
-            <path d="M 300 210 L 300 230 L 100 230 L 100 245" fill="none" stroke="#27272a" stroke-width="1.5" marker-end="url(#arrow)" />
-            <path d="M 300 210 L 300 230 L 300 245" fill="none" stroke="#27272a" stroke-width="1.5" marker-end="url(#arrow)" />
-            <path d="M 300 210 L 300 230 L 500 230 L 500 245" fill="none" stroke="#27272a" stroke-width="1.5" marker-end="url(#arrow)" />
-
-            <!-- Sub Node: Portfolio -->
-            <g 
-              class="cursor-pointer group" 
-              @mouseenter="selectedNode = 'portfolio'"
-              @click="selectedNode = 'portfolio'"
-            >
-              <rect x="30" y="250" width="140" height="45" rx="4" fill="#18181b" :stroke="selectedNode === 'portfolio' ? '#ef4444' : '#27272a'" stroke-width="1.5" class="transition-all duration-200" />
-              <text x="100" y="276" text-anchor="middle" font-size="10" class="fill-text-main">Web Portfolio</text>
-            </g>
-
-            <!-- Sub Node: Self Hosted Services -->
-            <g 
-              class="cursor-pointer group" 
-              @mouseenter="selectedNode = 'services'"
-              @click="selectedNode = 'services'"
-            >
-              <rect x="210" y="250" width="180" height="45" rx="4" fill="#18181b" :stroke="selectedNode === 'services' ? '#ef4444' : '#27272a'" stroke-width="1.5" class="transition-all duration-200" />
-              <text x="300" y="276" text-anchor="middle" font-size="10" class="fill-text-main">Jellyfin / Seafile / n8n</text>
-            </g>
-
-            <!-- Sub Node: Monitoring -->
-            <g 
-              class="cursor-pointer group" 
-              @mouseenter="selectedNode = 'monitoring'"
-              @click="selectedNode = 'monitoring'"
-            >
-              <rect x="430" y="250" width="140" height="45" rx="4" fill="#18181b" :stroke="selectedNode === 'monitoring' ? '#ef4444' : '#27272a'" stroke-width="1.5" class="transition-all duration-200" />
-              <text x="500" y="276" text-anchor="middle" font-size="10" class="fill-text-main">Prometheus / Grafana</text>
+              <rect :x="node.x" :y="node.y" :width="node.width" :height="node.height" rx="6" />
+              <text :x="node.x + node.width / 2" :y="node.y + node.height / 2 + 4" text-anchor="middle">
+                {{ node.label }}
+              </text>
             </g>
           </svg>
         </div>
 
-        <!-- Description Panel (1/3 width) -->
-        <div class="border border-border-dark/60 bg-surface-dark/60 rounded-lg p-6 flex flex-col justify-between">
+        <aside class="details-panel" aria-live="polite">
           <div>
-            <div class="text-[10px] font-mono text-red-primary uppercase tracking-wider mb-2">// Node Details</div>
-            <h3 class="text-base font-bold text-text-main font-mono mb-3 uppercase">
-              {{ nodeDetails[selectedNode].title }}
-            </h3>
-            <p class="text-xs text-text-muted leading-relaxed">
-              {{ nodeDetails[selectedNode].description }}
-            </p>
+            <div class="details-kicker">// Node Details</div>
+            <h3>{{ currentNode.title }}</h3>
+            <dl>
+              <div>
+                <dt>Role</dt>
+                <dd>{{ currentNode.role }}</dd>
+              </div>
+              <div>
+                <dt>Why it matters</dt>
+                <dd>{{ currentNode.description }}</dd>
+              </div>
+            </dl>
           </div>
-          <div class="mt-6 pt-4 border-t border-border-dark/30 text-[10px] font-mono text-text-subtle">
-            Select another component to view its networking properties.
-          </div>
-        </div>
-      </div>
 
+          <div>
+            <div class="related-label">Related services</div>
+            <div class="chip-list">
+              <span v-for="tag in currentNode.related" :key="tag">{{ tag }}</span>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-const selectedNode = ref<'internet' | 'cloudflare' | 'traefik' | 'portfolio' | 'services' | 'monitoring'>('traefik')
+type NodeId = 'internet' | 'cloudflare' | 'traefik' | 'portfolio' | 'services' | 'monitoring'
+
+interface DiagramNode {
+  id: NodeId
+  label: string
+  x: number
+  y: number
+  width: number
+  height: number
+}
 
 interface NodeInfo {
   title: string
+  role: string
   description: string
+  related: string[]
 }
 
-const nodeDetails: Record<string, NodeInfo> = {
+const selectedNode = ref<NodeId>('traefik')
+
+const diagramNodes: DiagramNode[] = [
+  { id: 'internet', label: 'Internet', x: 280, y: 22, width: 120, height: 40 },
+  { id: 'cloudflare', label: 'Cloudflare Tunnel', x: 225, y: 98, width: 230, height: 50 },
+  { id: 'traefik', label: 'Traefik Edge Router', x: 205, y: 188, width: 270, height: 50 },
+  { id: 'portfolio', label: 'Web Portfolio', x: 44, y: 288, width: 152, height: 48 },
+  { id: 'services', label: 'Self-hosted Apps', x: 254, y: 288, width: 172, height: 48 },
+  { id: 'monitoring', label: 'Prometheus / Grafana', x: 484, y: 288, width: 172, height: 48 },
+]
+
+const nodeDetails: Record<NodeId, NodeInfo> = {
   internet: {
     title: 'Public Web Traffic',
-    description: 'Incoming requests originating from standard clients worldwide. Traffic is encrypted using SSL/TLS before leaving the client browser.'
+    role: 'External requests entering the public layer',
+    description: 'Traffic starts outside the lab and reaches only the intentionally published services, without direct access to private administration paths.',
+    related: ['TLS', 'DNS', 'Public services'],
   },
   cloudflare: {
-    title: 'Cloudflare Tunnel daemon',
-    description: 'Establishes a secure, outbound-only connection between the local machine and the nearest Cloudflare Edge server. Eliminates the need to open ports on the home router (no port forwarding required).'
+    title: 'Cloudflare Tunnel Daemon',
+    role: 'Outbound-only ingress bridge',
+    description: 'The local daemon creates a secure outbound connection to Cloudflare, avoiding router port forwarding for the exposed web services.',
+    related: ['cloudflared', 'DNS', 'Tunnel'],
   },
   traefik: {
     title: 'Traefik Edge Router',
-    description: 'A modern, dynamic reverse proxy that receives incoming requests from the Cloudflare Tunnel. Automatically deciphers hostnames, handles internal DNS routing, manages SSL termination, and routes requests to the correct Docker container.'
+    role: 'Reverse proxy and routing layer',
+    description: 'Traefik receives requests from the tunnel layer, matches host rules and routes traffic to the correct Docker service with a compact routing surface.',
+    related: ['Docker', 'HTTPS', 'Middleware'],
   },
   portfolio: {
     title: 'Static Portfolio Container',
-    description: 'A Docker container hosting this portfolio website. Built with Astro, generated as fully static optimized HTML, and served at minimal latency.'
+    role: 'Public static web application',
+    description: 'The Astro portfolio can be served as optimized static output behind the same proxy pattern used for the rest of the public services.',
+    related: ['Astro', 'Nginx', 'Docker'],
   },
   services: {
     title: 'Self-Hosted Application Stack',
-    description: 'A suite of containerized utilities running inside isolated Docker networks, including Seafile (private cloud storage), Jellyfin (media library streaming), and n8n (workflow automation).'
+    role: 'Private and utility services',
+    description: 'Apps such as Seafile, Jellyfin and n8n run as isolated containers and are grouped by intended exposure and maintenance profile.',
+    related: ['Seafile', 'Jellyfin', 'n8n'],
   },
   monitoring: {
     title: 'Monitoring Suite',
-    description: 'Prometheus collects system metrics (CPU load, memory allocation, container statuses) at regular intervals, while Grafana visualizes the data via interactive dashboards.'
+    role: 'Health and operations visibility',
+    description: 'Prometheus and Grafana provide a static case-study view here, while the real dashboards remain private to avoid exposing operational details.',
+    related: ['Prometheus', 'Grafana', 'Docker'],
+  },
+}
+
+const currentNode = computed(() => nodeDetails[selectedNode.value])
+</script>
+
+<style scoped>
+.architecture-section {
+  border-bottom: 1px solid rgba(39, 39, 42, 0.55);
+  background: rgba(9, 9, 11, 0.92);
+  padding: 4rem 0;
+}
+
+.architecture-shell {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section-heading {
+  max-width: 48rem;
+  margin-bottom: 2.5rem;
+}
+
+.section-kicker,
+.details-kicker,
+.related-label {
+  color: #ef4444;
+  font-size: 0.625rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.section-heading h2 {
+  margin-top: 0.75rem;
+  color: #fafafa;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 700;
+}
+
+.section-heading p {
+  margin-top: 0.75rem;
+  color: #a1a1aa;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.architecture-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.75fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.architecture-panel,
+.details-panel {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
+    #111113;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.32);
+}
+
+.architecture-panel {
+  min-height: 430px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 2rem);
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.diagram {
+  width: min(100%, 720px);
+  height: auto;
+  color: #fafafa;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  overflow: visible;
+}
+
+.diagram-link {
+  fill: none;
+  stroke: rgba(113, 113, 122, 0.68);
+  stroke-width: 1.4;
+}
+
+.diagram-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.diagram-node rect {
+  fill: #18181b;
+  stroke: rgba(255, 255, 255, 0.14);
+  stroke-width: 1.4;
+  transition: stroke 180ms ease, filter 180ms ease, fill 180ms ease;
+}
+
+.diagram-node text {
+  fill: #fafafa;
+  font-size: 0.72rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.diagram-node:hover rect,
+.diagram-node:focus-visible rect,
+.diagram-node.is-selected rect {
+  fill: #1f1f23;
+  stroke: #ef4444;
+  filter: drop-shadow(0 0 14px rgba(239, 68, 68, 0.22));
+}
+
+.details-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.details-panel h3 {
+  margin-top: 0.75rem;
+  color: #fafafa;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.details-panel dl {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.details-panel dt {
+  margin-bottom: 0.35rem;
+  color: #71717a;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.details-panel dd {
+  color: #a1a1aa;
+  font-size: 0.78rem;
+  line-height: 1.65;
+}
+
+.chip-list {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip-list span {
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.06);
+  padding: 0.35rem 0.55rem;
+  color: #fafafa;
+  font-size: 0.68rem;
+}
+
+@media (max-width: 1000px) {
+  .architecture-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-panel {
+    min-height: 360px;
   }
 }
-</script>
+
+@media (max-width: 700px) {
+  .architecture-section {
+    padding: 3rem 0;
+  }
+
+  .architecture-shell {
+    padding: 0 1rem;
+  }
+
+  .architecture-panel {
+    min-height: 280px;
+    padding: 0.75rem;
+  }
+
+  .diagram-node text {
+    font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diagram-node rect {
+    transition: none;
+  }
+}
+</style>

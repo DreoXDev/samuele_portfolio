@@ -1,0 +1,27 @@
+---
+import TerminalWindow from './TerminalWindow.astro'
+---
+
+<section id="home" class="terminal-hero" data-app="hero" data-frame="home" aria-label="Portfolio introduction">
+  <div class="terminal-frame" data-boot="window">
+    <TerminalWindow />
+  </div>
+</section>
+
+<style>
+  .terminal-hero {
+    box-sizing: border-box;
+    min-height: 100svh;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
+    overflow: hidden;
+    color: #f4f4f5;
+    background:
+      radial-gradient(circle at 50% 18%, rgba(255, 60, 60, 0.1), transparent 35%),
+      radial-gradient(circle at 88% 88%, rgba(255, 255, 255, 0.055), transparent 26%),
+      #050506;
+  }
+
+  .terminal-frame {
+    height: calc(100svh - clamp(1.5rem, 4vw, 3rem));
+  }
+</style>

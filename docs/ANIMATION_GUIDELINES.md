@@ -1,31 +1,41 @@
-# Animation Guidelines — Samuele Poretti Portfolio
+# Animation Guidelines - Samuele Poretti Portfolio
 
-This document outlines the animation standards, libraries, performance limits, and accessibility rules for the portfolio.
+This document outlines the animation standards, performance limits and accessibility rules for the portfolio.
 
-## 1. Libraries and Tooling
+## Libraries and Tooling
 
-We use **GSAP (GreenSock Animation Platform)** with the **ScrollTrigger** plugin for UI transitions. 
-- The GSAP registration and imports are centralized in [src/lib/animations/gsap.ts](file:///d:/Projects/dreox_portfolio/src/lib/animations/gsap.ts) to prevent server-side rendering (SSR) errors in Astro.
-- CSS transitions are preferred for simple states (hovers, cursor blinking) to keep overhead low.
+- GSAP is used for startup animations, frame transitions and small staged reveals.
+- The shared GSAP import is centralized in `src/lib/animations/gsap.ts`.
+- CSS transitions are preferred for hover, focus and small state changes.
+- Scroll-bound plugin timelines are not part of the current frame system.
 
-## 2. Accessibility: Reduced Motion
-> [!IMPORTANT]
-> Some users have vestibular disorders where animations cause dizziness. We must honor their system settings.
+## Reduced Motion
 
-- Always check if the user prefers reduced motion using `prefersReducedMotion()` from [src/lib/animations/reducedMotion.ts](file:///d:/Projects/dreox_portfolio/src/lib/animations/reducedMotion.ts).
-- If reduced motion is active:
-  - Do NOT trigger GSAP ScrollTriggers.
-  - Disable the background log stream intervals.
-  - Set transition duration times to zero or instant.
+Always honor system-level reduced motion settings via `prefersReducedMotion()` from `src/lib/animations/reducedMotion.ts`.
 
-## 3. Performance Best Practices
+When reduced motion is active:
 
-To maintain 60 FPS scrolling:
-1. **Animate `transform` and `opacity` only:** Avoid animating properties that trigger layout recalculation (like `width`, `height`, `top`, `left`, `margin`).
-2. **Limit DOM elements:** For example, the background terminal log simulator ([src/components/interactive/AnimatedTerminalBackground.vue](file:///d:/Projects/dreox_portfolio/src/components/interactive/AnimatedTerminalBackground.vue)) must clean up elements and limit the list size to 25 lines.
-3. **Avoid heavy loops:** Never run continuous Javascript animation loops on scroll. Rely on ScrollTrigger's optimized event listener binding.
+- Do not start the fullscreen frame snapping mode.
+- Keep sections in normal document flow.
+- Avoid staged GSAP timelines.
+- Prefer instant visibility and native scrolling.
 
-## 4. What to Avoid
-- No complex WebGL/Three.js canvases.
-- No heavy video-based scroll frames.
-- No flashy, distracting animations that compromise the reading of professional CV information.
+## Performance Rules
+
+- Animate `transform` and `opacity` where possible.
+- Avoid continuous scroll-bound animation loops.
+- Keep the app switcher lightweight and decorative.
+- Clean up global event listeners in Vue component unmount hooks.
+- Do not add polling or intervals unless there is a clear user-facing need.
+
+## Current Interaction Model
+
+- `ScrollSceneController.vue` owns desktop frame mode, hash handling, wheel/touch navigation, the Alt+Tab-style switcher and frame boot animations.
+- Timeline horizontal interaction is scoped to the timeline canvas.
+- Contact note scroll is allowed to consume wheel input before frame switching.
+
+## What to Avoid
+
+- No fake live dashboards without real data.
+- No heavy WebGL or video-based scroll effects.
+- No animations that make contact or project content harder to read.

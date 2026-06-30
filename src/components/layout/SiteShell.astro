@@ -1,11 +1,18 @@
 ---
 import Navbar from './Navbar.astro'
 import Footer from './Footer.astro'
+
+interface Props {
+  showNavbar?: boolean
+  showFooter?: boolean
+}
+
+const { showNavbar = true, showFooter = true } = Astro.props
 ---
 <div class="flex flex-col min-h-screen">
-  <Navbar />
+  {showNavbar && <Navbar />}
   <main class="flex-grow">
     <slot />
   </main>
-  <Footer />
+  {showFooter && <Footer />}
 </div>

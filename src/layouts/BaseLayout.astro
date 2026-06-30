@@ -11,19 +11,37 @@ interface Props {
 const {
   title = siteConfig.title,
   description = siteConfig.description,
-  ogImage = '/assets/images/profile/avatar-placeholder.svg',
+  ogImage = siteConfig.ogImage,
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString()
+const assetBase = `${siteConfig.url.replace(/\/$/, '')}${import.meta.env.BASE_URL.replace(/\/$/, '')}`
+const imageURL = ogImage.startsWith('http') ? ogImage : `${assetBase}${ogImage}`
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.author,
+  url: siteConfig.url,
+  email: `mailto:${siteConfig.email}`,
+  jobTitle: 'Computer Science Student & Developer',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Milan',
+    addressCountry: 'IT',
+  },
+  sameAs: [siteConfig.github, siteConfig.githubInstitutional, siteConfig.linkedin],
+}
 ---
 
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
   <head>
     <!-- Global Metadata -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <link rel="alternate icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}apple-touch-icon.png`} />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Canonical URL -->
@@ -33,21 +51,27 @@ const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString()
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#ef4444" />
+    <meta name="author" content={siteConfig.author} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#050506" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:site_name" content={`${siteConfig.name} Portfolio`} />
+    <meta property="og:locale" content={siteConfig.locale} />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
 
     <!-- Font Loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

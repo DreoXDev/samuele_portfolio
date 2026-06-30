@@ -1,0 +1,68 @@
+<div class="hero-identity">
+  <div class="hero-output">
+    <h1 data-boot="title">Samuele Poretti</h1>
+    <p class="hero-role" data-boot="subtitle">Computer Science Student & Developer</p>
+    <p class="hero-copy" data-boot="description">
+      I design and build practical software: from portfolio websites and Android apps to self-hosted dashboards, automation tools and clean developer workflows.
+    </p>
+  </div>
+</div>
+
+<style>
+  .hero-identity {
+    position: relative;
+    z-index: 3;
+    width: min(760px, 88vw);
+    margin-inline: auto;
+    padding: clamp(1.2rem, 3vw, 2.6rem);
+    text-align: center;
+  }
+
+  .hero-identity::before {
+    content: "";
+    position: absolute;
+    inset: clamp(-2.5rem, -4vw, -1.5rem);
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(5, 5, 8, 0.74), rgba(5, 5, 8, 0.42) 58%, transparent 78%);
+  }
+
+  .hero-output h1 {
+    max-width: 11ch;
+    margin: 0 auto;
+    color: #f4f4f5;
+    font-size: clamp(3rem, 10vw, 7.2rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: 0;
+    text-wrap: balance;
+    text-shadow: 0 0 34px rgba(255, 59, 59, 0.13);
+  }
+
+  .hero-role {
+    margin: clamp(0.9rem, 1.8vw, 1.25rem) 0 0;
+    color: #ff6b6b;
+    font-size: clamp(1rem, 2.2vw, 1.55rem);
+    font-weight: 700;
+  }
+
+  .hero-copy {
+    max-width: 46rem;
+    margin: 1rem auto 0;
+    color: #c4c4ca;
+    font-size: clamp(0.9rem, 1.4vw, 1.08rem);
+    line-height: 1.75;
+  }
+
+  @media (max-width: 760px) {
+    .hero-identity {
+      width: min(100%, 21rem);
+      padding: 0;
+    }
+
+    .hero-output h1 {
+      max-width: 10ch;
+      font-size: clamp(2.75rem, 17vw, 4.6rem);
+    }
+  }
+</style>

@@ -1,82 +1,128 @@
-# Samuele Poretti — Developer Portfolio (V1)
+# Samuele Poretti Portfolio
 
-Welcome to the source repository of my personal portfolio. This website is built using **Astro**, **Vue 3**, **Tailwind CSS**, and **GSAP** for animations.
+Personal portfolio built with Astro. The current version uses a dark terminal/editor language with animated app-like sections and a separate Home Lab case-study page.
 
-The site is designed to look like a developer's desktop environment: a terminal landing page, a simulated IDE code editor showing projects, and a git log timeline documenting history.
+## Overview
 
-## 🚀 Technologies Used
+- `_home`: terminal-style introduction
+- `_projects`: code editor and project explorer
+- `_timeline`: horizontal timeline canvas
+- `_contact`: Obsidian-style contact note
+- `/home-lab`: technical case study for the personal home lab
 
-- **Framework:** Astro (Static Site Generation for fast loading speeds)
-- **UI Islands:** Vue.js (for the interactive terminal, editor tabs, and animations)
-- **Styling:** Tailwind CSS (v4) & JetBrains Mono font
-- **Animations:** GSAP & ScrollTrigger
-- **Icons:** @lucide/vue
+## Tech Stack
 
----
+- Astro static output
+- Vue islands for interactive sections
+- Tailwind CSS v4
+- GSAP for UI transitions
+- JetBrains Mono
+- `@astrojs/sitemap` for sitemap generation
 
-## 📂 Project Directory Structure
+## Project Structure
 
 ```text
-portfolio/
-├─ docs/                  # Project documentation guidelines
-│  ├─ PROJECT_GUIDELINES.md
-│  ├─ DESIGN_SYSTEM.md
-│  ├─ CONTENT_MODEL.md
-│  ├─ ANIMATION_GUIDELINES.md
-│  └─ DEPLOYMENT_NOTES.md
-├─ public/                # Static assets
-│  ├─ assets/
-│  │  ├─ images/
-│  │  │  ├─ projects/      # Project screenshots placeholders
-│  │  │  ├─ homelab/
-│  │  │  └─ profile/
-│  │  └─ cv/              # CV PDF download folder
-├─ src/
-│  ├─ components/
-│  │  ├─ common/          # Reusable low-level widgets (Badge, Button, Card...)
-│  │  ├─ layout/          # Global layout parts (Navbar, Footer, Shell...)
-│  │  ├─ sections/        # Homepage landing and sections
-│  │  ├─ homelab/         # Home Lab specific components
-│  │  └─ interactive/     # Background animations and controllers
-│  ├─ data/               # Separated content files (projects, logs, timeline)
-│  ├─ layouts/            # Base HTML boilerplate (BaseLayout)
-│  ├─ lib/                # Shared utilities and animation configuration
-│  ├─ pages/              # Route entry points (index.astro, home-lab.astro)
-│  ├─ styles/             # Global stylesheet (globals.css)
-│  └─ types/              # TypeScript types
+src/
+  components/
+    common/       Shared UI primitives
+    hero/         Home terminal frame
+    homelab/      Home Lab page sections
+    interactive/  Frame controller and app switcher
+    layout/       Shell, navbar, footer
+    navigation/   Frame tabs
+    sections/     Projects, timeline, contact
+  data/           Site, projects and timeline content
+  layouts/        Base metadata and document shell
+  lib/            Animation helpers
+  pages/          Astro routes
+  styles/         Global CSS and Tailwind theme
+  types/          Shared TypeScript types
+public/
+  assets/         Static images and icons
+  cv/             Resume PDF location
 ```
 
----
+## Local Development
 
-## 🧞 Local Development Commands
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+```
 
-All commands are run from the root of the project:
+## Content Updates
 
-| Command | Action |
-| :--- | :--- |
-| `npm install` | Installs dependencies |
-| `npm run dev` | Starts local dev server at `localhost:4321` |
-| `npm run build` | Builds your production static site to `./dist/` |
-| `npm run preview` | Previews the build output locally |
+### CV
 
----
+Place the resume PDF at:
 
-## 📝 Internal Documentation Links
+```text
+public/cv/samuele-poretti-cv.pdf
+```
 
-For details about extending the code, styling, or deployment:
-- [Project Guidelines](file:///d:/Projects/dreox_portfolio/docs/PROJECT_GUIDELINES.md)
-- [Design System](file:///d:/Projects/dreox_portfolio/docs/DESIGN_SYSTEM.md)
-- [Content Model & Types](file:///d:/Projects/dreox_portfolio/docs/CONTENT_MODEL.md)
-- [Animation & GSAP Guidelines](file:///d:/Projects/dreox_portfolio/docs/ANIMATION_GUIDELINES.md)
-- [Self-Hosting & Deployment Notes](file:///d:/Projects/dreox_portfolio/docs/DEPLOYMENT_NOTES.md)
+It will be served at:
 
----
+```text
+/cv/samuele-poretti-cv.pdf
+```
 
-## 📌 TODO / Future Iterations (V1.1+)
+When the file is missing, the contact note shows a non-clickable reminder instead of a broken link.
 
-- [ ] Replace placeholder project screenshots in `public/assets/images/projects/`
-- [ ] Add the actual CV PDF under `public/assets/cv/`
-- [ ] Add the real LinkedIn profile URL in `src/data/site.ts`
-- [ ] Implement an automated Docker build and CI/CD workflow for the home server
-- [ ] Design and hook up dynamic charts to the Home Lab page using real host statistics APIs
-- [ ] Refine the alt-tab desktop workspace transition animations using GSAP
+### Projects
+
+Project entries live in:
+
+```text
+src/data/projects.ts
+```
+
+Project types live in:
+
+```text
+src/types/project.ts
+```
+
+### Timeline
+
+Timeline entries live in:
+
+```text
+src/data/timeline.ts
+```
+
+### Contact Links
+
+Global contact and profile links live in:
+
+```text
+src/data/site.ts
+```
+
+Current public links:
+
+- Email: `samuele.poretti2003@gmail.com`
+- GitHub: `https://github.com/DreoXDev`
+- Institutional GitHub: `https://github.com/SPoretti`
+- LinkedIn: `https://www.linkedin.com/in/samueleporetti/`
+
+## SEO
+
+Metadata is centralized in:
+
+```text
+src/layouts/BaseLayout.astro
+src/data/site.ts
+```
+
+The site includes canonical URLs, Open Graph tags, Twitter card tags, a JSON-LD `Person` schema, `robots.txt`, generated sitemap output, favicon assets, Apple touch icon and a global OG image.
+
+## Deployment
+
+The project builds to static files in `dist/`. The repo includes:
+
+- `Dockerfile` for building and serving the static output with Nginx
+- `nginx.conf` for static hosting
+- GitHub workflow files under `.github/`
+
+Run `npm run build` before publishing.

@@ -1,22 +1,86 @@
 ---
 import Container from '../common/Container.astro'
+
+const overviewCards = [
+  {
+    label: 'Reverse Proxy',
+    text: 'Traefik routes services behind clean host rules, middleware and automatic HTTPS.',
+  },
+  {
+    label: 'Secure Access',
+    text: 'Cloudflare Tunnel and Tailscale reduce the need for exposed public entry points.',
+  },
+  {
+    label: 'Containerized Services',
+    text: 'Docker Compose keeps services isolated, reproducible and easier to maintain.',
+  },
+  {
+    label: 'Observability',
+    text: 'Prometheus and Grafana support inspection of machine and service health.',
+  },
+]
 ---
-<section class="py-20 border-b border-border-dark/30 bg-background-dark relative overflow-hidden">
-  <!-- Subtle radial gradient highlight -->
-  <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(239,68,68,0.08),rgba(255,255,255,0))]"></div>
-  <Container class="relative z-10 text-center max-w-3xl">
-    <div class="inline-flex items-center gap-1.5 px-3 py-1 border border-red-primary/30 rounded-full text-xs font-mono text-red-primary bg-red-primary/5 mb-6 select-none">
-      <span class="w-1.5 h-1.5 rounded-full bg-red-primary animate-pulse"></span>
-      <span>Infrastructure Online</span>
+
+<section class="relative overflow-hidden border-b border-border-dark/30 bg-background-dark py-16 sm:py-20">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_50%_-15%,rgba(239,68,68,0.10),rgba(9,9,11,0)_62%)]"></div>
+  <div class="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] [background-size:32px_32px]"></div>
+
+  <Container class="relative z-10">
+    <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_420px] lg:gap-16">
+      <div>
+        <div class="mb-6 inline-flex items-center gap-2 border border-red-primary/30 bg-red-primary/5 px-3 py-1 text-xs font-mono text-red-primary select-none">
+          <span class="h-1.5 w-1.5 rounded-full bg-red-primary shadow-red-glow animate-pulse"></span>
+          <span>Infrastructure Online</span>
+        </div>
+        <h1 class="mb-6 max-w-3xl text-4xl font-bold tracking-tight text-text-main font-mono sm:text-5xl lg:text-6xl">
+          Personal Home Lab
+        </h1>
+        <p class="max-w-3xl text-base leading-relaxed text-text-muted sm:text-lg">
+          A small Linux server where I experiment with Docker, reverse proxy routing,
+          secure tunnels, monitoring and self-hosted services.
+        </p>
+        <p class="mt-4 max-w-2xl text-xs leading-relaxed text-text-subtle">
+          Built as a practical infrastructure case study, focused on clean routing,
+          container isolation and maintainable service operations.
+        </p>
+      </div>
+
+      <aside class="border border-border-dark/70 bg-surface-dark/70 p-5 shadow-[0_24px_70px_rgba(0,0,0,0.35)] backdrop-blur">
+        <div class="mb-4 flex items-center justify-between border-b border-border-dark/50 pb-3">
+          <span class="text-[10px] uppercase tracking-[0.24em] text-red-primary">~/home-lab/status</span>
+          <span class="text-[10px] uppercase text-text-subtle">static report</span>
+        </div>
+        <dl class="space-y-3 text-xs">
+          <div class="grid grid-cols-[90px_1fr] gap-4">
+            <dt class="text-text-subtle">system</dt>
+            <dd class="text-text-main">online</dd>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-4">
+            <dt class="text-text-subtle">network</dt>
+            <dd class="text-text-main">cloudflare tunnel + tailscale</dd>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-4">
+            <dt class="text-text-subtle">stack</dt>
+            <dd class="text-text-main">docker compose / traefik / prometheus / grafana</dd>
+          </div>
+          <div class="grid grid-cols-[90px_1fr] gap-4">
+            <dt class="text-text-subtle">exposure</dt>
+            <dd class="text-text-main">minimal public surface</dd>
+          </div>
+        </dl>
+      </aside>
     </div>
-    <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-text-main font-mono mb-6">
-      Personal Home Lab
-    </h1>
-    <p class="text-base sm:text-lg text-text-muted leading-relaxed mb-4">
-      A small Linux server where I experiment with Docker, reverse proxy routing, secure tunnels, monitoring, and self-hosted services.
-    </p>
-    <p class="text-xs text-text-subtle font-mono">
-      The same infrastructure is planned to host this portfolio through a custom domain.
-    </p>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {overviewCards.map((card, index) => (
+        <article class="border border-border-dark/60 bg-surface-dark/45 p-5 transition-all duration-200 hover:border-red-primary/30 hover:bg-surface-dark/70">
+          <div class="mb-4 text-[10px] uppercase tracking-[0.24em] text-red-primary">
+            0{index + 1}
+          </div>
+          <h2 class="mb-2 text-sm font-bold text-text-main">{card.label}</h2>
+          <p class="text-xs leading-relaxed text-text-muted">{card.text}</p>
+        </article>
+      ))}
+    </div>
   </Container>
 </section>
