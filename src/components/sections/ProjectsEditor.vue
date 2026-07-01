@@ -12,8 +12,8 @@
             <a href="#home" class="editor-global-tab" data-nav-target="home">_home</a>
             <a href="#projects" class="editor-global-tab editor-global-tab-active" data-nav-target="projects" aria-current="page">_projects</a>
             <a href="#timeline" class="editor-global-tab" data-nav-target="timeline">_timeline</a>
-            <a href="/home-lab" class="editor-global-tab">_home_lab</a>
             <a href="#contact" class="editor-global-tab" data-nav-target="contact">_contact</a>
+            <a href="/home-lab" class="editor-global-tab">_home_lab</a>
           </nav>
           <div class="editor-path">{{ activePath }}</div>
         </header>
@@ -342,8 +342,11 @@ onMounted(() => {
     display: flex;
     align-items: center;
     gap: 0.35rem;
+    contain: inline-size;
+    max-width: 100%;
     min-width: 0;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }
 
@@ -352,6 +355,7 @@ onMounted(() => {
   }
 
   .editor-global-tab {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     min-height: 2rem;
@@ -401,7 +405,11 @@ onMounted(() => {
   }
 
   .editor-sidebar {
+    display: flex;
+    min-height: 0;
     min-width: 0;
+    flex-direction: column;
+    overflow: hidden;
     border-right: 1px solid rgba(255, 255, 255, 0.09);
     background: #08080a;
   }
@@ -420,9 +428,15 @@ onMounted(() => {
   }
 
   .file-tree {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 0.9rem;
     color: #a1a1aa;
     font-size: 0.76rem;
+    scrollbar-color: rgba(239, 68, 68, 0.42) rgba(255, 255, 255, 0.04);
+    scrollbar-width: thin;
   }
 
   .tree-root,
@@ -810,6 +824,7 @@ onMounted(() => {
   @media (max-width: 860px) {
     .projects-section {
       min-height: 100svh;
+      overflow: visible;
     }
 
     .projects-shell {
@@ -819,12 +834,14 @@ onMounted(() => {
 
     .editor-frame {
       min-height: calc(100svh - 1.5rem);
+      overflow: visible;
     }
 
     .editor-titlebar {
       display: flex;
       flex-wrap: wrap;
       gap: 0.25rem 0.85rem;
+      min-width: 0;
     }
 
     .editor-path {
@@ -834,6 +851,7 @@ onMounted(() => {
     .editor-global-tabs {
       order: 2;
       width: 100%;
+      min-width: 0;
       padding-top: 0.55rem;
     }
 
@@ -849,28 +867,39 @@ onMounted(() => {
     }
 
     .editor-sidebar {
+      max-height: min(19rem, 42svh);
       border-right: 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.09);
     }
 
     .file-tree {
-      max-height: 16rem;
-      overflow-y: auto;
+      flex: 1;
     }
 
     .editor-main {
-      min-height: 32rem;
+      min-height: 0;
+    }
+
+    .project-panel,
+    .readme-panel {
+      margin: 0 auto;
     }
   }
 
   @media (max-width: 560px) {
     .projects-section {
-      padding: 0.75rem;
+      padding: 0;
     }
 
     .projects-shell {
       width: 100%;
-      min-height: calc(100svh - 1.5rem);
+      min-height: 100svh;
+    }
+
+    .editor-frame {
+      min-height: 100svh;
+      border-width: 0 0 1px;
+      border-radius: 0;
     }
 
     .editor-titlebar {

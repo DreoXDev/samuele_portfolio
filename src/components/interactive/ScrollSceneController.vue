@@ -41,6 +41,7 @@ let accumulatedDelta = 0
 let deltaResetTimer: number | undefined
 let bootTimeline: gsap.core.Timeline | null = null
 let activeTransition: gsap.core.Timeline | null = null
+let hasBootedHome = false
 let hasBootedProjects = false
 let hasBootedTimeline = false
 let hasBootedContact = false
@@ -134,17 +135,25 @@ const showFrameImmediately = (target: AppFrame) => {
   const { switcher } = getEls()
 
   activeTransition?.kill()
+  const hasSkeleton = prepareFrameSkeleton(target)
   gsap.set(switcher, { autoAlpha: 0, scale: 0.96 })
   FRAMES.forEach((frame) => setFrameRestingState(frame, target))
   setActiveFrame(target)
 
-  if (target === 'projects') bootProjectsEditor()
-  if (target === 'timeline') bootTimelineCanvas()
-  if (target === 'contact') bootContactNote()
+  if (hasSkeleton) {
+    requestAnimationFrame(() => {
+      clearFrameSkeleton(target)
+      bootFrame(target)
+    })
+    return
+  }
+
+  bootFrame(target)
 }
 
 const initStartupAnimation = () => {
   if (currentFrame !== 'home') return
+  if (hasBootedHome || prefersReducedMotion()) return
 
   const heroWindow = document.querySelector<HTMLElement>('[data-boot="window"]')
   const controls = document.querySelector<HTMLElement>('[data-boot="controls"]')
@@ -156,6 +165,7 @@ const initStartupAnimation = () => {
   const description = document.querySelector<HTMLElement>('[data-boot="description"]')
 
   if (!heroWindow || !controls || !stream || !title || !subtitle || !description) return
+  hasBootedHome = true
 
   bootTimeline = gsap.timeline({ defaults: { ease: 'power2.out' } })
 
@@ -175,6 +185,34 @@ const initStartupAnimation = () => {
     .to(title, { autoAlpha: 1, y: 0, duration: 0.42 }, 0.92)
     .to(subtitle, { autoAlpha: 1, y: 0, duration: 0.36 }, 1.04)
     .to(description, { autoAlpha: 1, y: 0, duration: 0.34 }, 1.14)
+}
+
+const hasFrameBooted = (frame: AppFrame) => {
+  if (frame === 'home') return hasBootedHome
+  if (frame === 'projects') return hasBootedProjects
+  if (frame === 'timeline') return hasBootedTimeline
+  return hasBootedContact
+}
+
+const prepareFrameSkeleton = (frame: AppFrame) => {
+  if (prefersReducedMotion() || hasFrameBooted(frame)) return false
+
+  const element = getFrameEl(frame)
+  if (!element) return false
+
+  element.classList.add('is-frame-skeleton')
+  return true
+}
+
+const clearFrameSkeleton = (frame: AppFrame) => {
+  getFrameEl(frame)?.classList.remove('is-frame-skeleton')
+}
+
+const bootFrame = (frame: AppFrame) => {
+  if (frame === 'home') initStartupAnimation()
+  if (frame === 'projects') bootProjectsEditor()
+  if (frame === 'timeline') bootTimelineCanvas()
+  if (frame === 'contact') bootContactNote()
 }
 
 const bootProjectsEditor = () => {
@@ -244,6 +282,7 @@ const animateFrameSwitch = (from: AppFrame, to: AppFrame) => {
   if (!fromEl || !toEl || !switcher) return Promise.resolve()
 
   const direction = getFrameIndex(to) > getFrameIndex(from) ? 1 : -1
+  const hasSkeleton = prepareFrameSkeleton(to)
   setSwitcherActive(to)
 
   return new Promise<void>((resolve) => {
@@ -252,9 +291,8 @@ const animateFrameSwitch = (from: AppFrame, to: AppFrame) => {
       onComplete: () => {
         setActiveFrame(to)
         FRAMES.forEach((frame) => setFrameRestingState(frame, to))
-        if (to === 'projects') bootProjectsEditor()
-        if (to === 'timeline') bootTimelineCanvas()
-        if (to === 'contact') bootContactNote()
+        if (hasSkeleton) clearFrameSkeleton(to)
+        bootFrame(to)
         resolve()
       },
     })
@@ -573,6 +611,213 @@ onUnmounted(() => {
 
   body.portfolio-frame-mode [data-frame='contact'] {
     z-index: 40;
+  }
+
+  body.portfolio-frame-mode [data-frame].is-frame-skeleton {
+    --skeleton-inset: clamp(1.5rem, 4vw, 3rem);
+    --skeleton-panel: rgba(255, 255, 255, 0.035);
+    --skeleton-line: rgba(255, 255, 255, 0.11);
+    --skeleton-soft: rgba(255, 255, 255, 0.065);
+    --skeleton-accent: rgba(255, 70, 70, 0.48);
+
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 14%, rgba(255, 70, 70, 0.12), transparent 24rem),
+      radial-gradient(circle at 82% 72%, rgba(255, 255, 255, 0.05), transparent 22rem),
+      linear-gradient(135deg, #09090d 0%, #111118 58%, #0b0b10 100%);
+  }
+
+  body.portfolio-frame-mode [data-frame].is-frame-skeleton > * {
+    opacity: 0 !important;
+  }
+
+  body.portfolio-frame-mode [data-frame].is-frame-skeleton::before,
+  body.portfolio-frame-mode [data-frame].is-frame-skeleton::after {
+    position: absolute;
+    inset: var(--skeleton-inset);
+    z-index: 1;
+    content: '';
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    pointer-events: none;
+  }
+
+  body.portfolio-frame-mode [data-frame].is-frame-skeleton::before {
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+    background:
+      radial-gradient(circle at 1.45rem 1.45rem, rgba(255, 95, 87, 0.88) 0 0.28rem, transparent 0.3rem),
+      radial-gradient(circle at 2.35rem 1.45rem, rgba(255, 189, 46, 0.82) 0 0.28rem, transparent 0.3rem),
+      radial-gradient(circle at 3.25rem 1.45rem, rgba(40, 201, 64, 0.78) 0 0.28rem, transparent 0.3rem),
+      linear-gradient(90deg, var(--skeleton-soft) 0 4.8rem, transparent 4.8rem 5.25rem, var(--skeleton-soft) 5.25rem 10.4rem, transparent 10.4rem 10.85rem, rgba(255, 70, 70, 0.14) 10.85rem 15.8rem, transparent 15.8rem),
+      linear-gradient(rgba(255, 255, 255, 0.07) 0 1px, transparent 1px),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0 3.1rem, transparent 3.1rem),
+      rgba(255, 255, 255, 0.022);
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      4.75rem 0.95rem,
+      0 3.1rem,
+      0 0,
+      0 0;
+    background-repeat: no-repeat;
+    background-size:
+      auto,
+      auto,
+      auto,
+      28rem 1rem,
+      100% 1px,
+      100% 100%,
+      100% 100%;
+  }
+
+  body.portfolio-frame-mode [data-frame].is-frame-skeleton::after {
+    border: 0;
+    opacity: 0.96;
+    animation: frame-skeleton-pulse 1.25s ease-in-out infinite;
+  }
+
+  body.portfolio-frame-mode [data-frame='home'].is-frame-skeleton::after {
+    inset: calc(var(--skeleton-inset) + 4.4rem) calc(var(--skeleton-inset) + 3.2rem)
+      calc(var(--skeleton-inset) + 3.2rem);
+    background:
+      linear-gradient(90deg, var(--skeleton-accent) 0 0.65rem, transparent 0.65rem 1rem, var(--skeleton-line) 1rem 11rem, transparent 11rem),
+      linear-gradient(90deg, rgba(74, 222, 128, 0.24) 0 5rem, transparent 5rem 5.5rem, var(--skeleton-soft) 5.5rem 19rem, transparent 19rem),
+      linear-gradient(90deg, rgba(74, 222, 128, 0.2) 0 6.5rem, transparent 6.5rem 7rem, var(--skeleton-soft) 7rem 25rem, transparent 25rem),
+      linear-gradient(90deg, rgba(74, 222, 128, 0.18) 0 4.8rem, transparent 4.8rem 5.3rem, var(--skeleton-soft) 5.3rem 17rem, transparent 17rem),
+      linear-gradient(90deg, var(--skeleton-line) 0 min(42rem, 72%), transparent min(42rem, 72%) 100%),
+      linear-gradient(90deg, var(--skeleton-soft) 0 min(26rem, 52%), transparent min(26rem, 52%) 100%),
+      linear-gradient(90deg, var(--skeleton-soft) 0 min(36rem, 64%), transparent min(36rem, 64%) 100%);
+    background-position:
+      0 0,
+      0 3.4rem,
+      0 5.25rem,
+      0 7.1rem,
+      0 calc(100% - 8.3rem),
+      0 calc(100% - 5.6rem),
+      0 calc(100% - 3rem);
+    background-repeat: no-repeat;
+    background-size:
+      100% 0.95rem,
+      100% 0.72rem,
+      100% 0.72rem,
+      100% 0.72rem,
+      100% 2.9rem,
+      100% 1.1rem,
+      100% 1rem;
+  }
+
+  body.portfolio-frame-mode [data-frame='projects'].is-frame-skeleton::after {
+    inset: calc(var(--skeleton-inset) + 4rem) calc(var(--skeleton-inset) + 2rem)
+      calc(var(--skeleton-inset) + 2rem);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 100%),
+      linear-gradient(90deg, var(--skeleton-soft) 0 7rem, transparent 7rem),
+      linear-gradient(90deg, rgba(255, 70, 70, 0.22) 0 8rem, transparent 8rem 8.5rem, var(--skeleton-soft) 8.5rem 17rem, transparent 17rem),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 10rem, transparent 10rem),
+      linear-gradient(90deg, rgba(74, 222, 128, 0.18) 0 4rem, transparent 4rem 4.5rem, var(--skeleton-soft) 4.5rem 24rem, transparent 24rem),
+      linear-gradient(90deg, rgba(96, 165, 250, 0.2) 0 5.5rem, transparent 5.5rem 6rem, var(--skeleton-soft) 6rem 30rem, transparent 30rem),
+      linear-gradient(90deg, rgba(244, 114, 182, 0.18) 0 4.6rem, transparent 4.6rem 5.1rem, var(--skeleton-soft) 5.1rem 20rem, transparent 20rem),
+      linear-gradient(90deg, rgba(250, 204, 21, 0.16) 0 5rem, transparent 5rem 5.5rem, var(--skeleton-soft) 5.5rem 27rem, transparent 27rem);
+    background-position:
+      0 0,
+      1.2rem 1.35rem,
+      14.5rem 1.2rem,
+      14.5rem 5.15rem,
+      14.5rem 8.5rem,
+      14.5rem 10.35rem,
+      14.5rem 12.2rem,
+      14.5rem 14.05rem;
+    background-repeat: no-repeat;
+    background-size:
+      12rem 100%,
+      10rem 0.85rem,
+      100% 1.65rem,
+      100% 1rem,
+      100% 0.75rem,
+      100% 0.75rem,
+      100% 0.75rem,
+      100% 0.75rem;
+  }
+
+  body.portfolio-frame-mode [data-frame='timeline'].is-frame-skeleton::after {
+    inset: calc(var(--skeleton-inset) + 5rem) calc(var(--skeleton-inset) + 2rem)
+      calc(var(--skeleton-inset) + 2rem);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 100%),
+      linear-gradient(90deg, var(--skeleton-soft) 0 6rem, transparent 6rem),
+      linear-gradient(90deg, var(--skeleton-soft) 0 8rem, transparent 8rem),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.14) 0 100%, transparent 100%),
+      radial-gradient(circle, rgba(255, 70, 70, 0.45) 0 0.45rem, transparent 0.5rem),
+      radial-gradient(circle, rgba(255, 255, 255, 0.18) 0 0.38rem, transparent 0.44rem),
+      radial-gradient(circle, rgba(255, 70, 70, 0.34) 0 0.42rem, transparent 0.48rem),
+      linear-gradient(90deg, var(--skeleton-soft) 0 9rem, transparent 9rem),
+      linear-gradient(90deg, var(--skeleton-soft) 0 12rem, transparent 12rem),
+      linear-gradient(90deg, var(--skeleton-soft) 0 10rem, transparent 10rem);
+    background-position:
+      0 0,
+      1.2rem 1.2rem,
+      1.2rem 3.35rem,
+      13.5rem 50%,
+      20rem 50%,
+      36rem 50%,
+      52rem 50%,
+      17rem 26%,
+      32rem 67%,
+      48rem 29%;
+    background-repeat: no-repeat;
+    background-size:
+      10.5rem 100%,
+      8rem 0.8rem,
+      7rem 0.72rem,
+      calc(100% - 16rem) 2px,
+      1rem 1rem,
+      1rem 1rem,
+      1rem 1rem,
+      100% 4.8rem,
+      100% 4.8rem,
+      100% 4.8rem;
+  }
+
+  body.portfolio-frame-mode [data-frame='contact'].is-frame-skeleton::after {
+    inset: calc(var(--skeleton-inset) + 4.3rem) max(calc(var(--skeleton-inset) + 9vw), 10rem)
+      calc(var(--skeleton-inset) + 2.4rem);
+    border-radius: 0.45rem;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.26);
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0 100%),
+      linear-gradient(90deg, rgba(255, 70, 70, 0.28) 0 4.2rem, transparent 4.2rem 4.8rem, var(--skeleton-soft) 4.8rem 12rem, transparent 12rem),
+      linear-gradient(90deg, var(--skeleton-line) 0 13rem, transparent 13rem),
+      linear-gradient(90deg, var(--skeleton-soft) 0 100%, transparent 100%),
+      linear-gradient(90deg, var(--skeleton-soft) 0 78%, transparent 78%),
+      linear-gradient(90deg, var(--skeleton-soft) 0 88%, transparent 88%),
+      linear-gradient(90deg, rgba(255, 70, 70, 0.18) 0 8rem, transparent 8rem 9rem, var(--skeleton-soft) 9rem 18rem, transparent 18rem),
+      linear-gradient(90deg, rgba(255, 70, 70, 0.18) 0 7rem, transparent 7rem 8rem, var(--skeleton-soft) 8rem 16rem, transparent 16rem);
+    background-position:
+      0 0,
+      2rem 2rem,
+      2rem 5.4rem,
+      2rem 8.8rem,
+      2rem 10.65rem,
+      2rem 12.5rem,
+      2rem 17rem,
+      2rem 20.2rem;
+    background-repeat: no-repeat;
+    background-size:
+      100% 100%,
+      100% 0.8rem,
+      100% 2.2rem,
+      calc(100% - 4rem) 0.8rem,
+      calc(100% - 4rem) 0.8rem,
+      calc(100% - 4rem) 0.8rem,
+      100% 1rem,
+      100% 1rem;
+  }
+
+  @keyframes frame-skeleton-pulse {
+    50% {
+      opacity: 0.72;
+    }
   }
 
   .app-switcher {

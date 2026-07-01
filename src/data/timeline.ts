@@ -26,6 +26,12 @@ export const timelineEvents: TimelineEvent[] = [
     hash: 'e2f91a5'
   },
   {
+    year: '2023',
+    title: 'Tauri desktop tool for medical team payouts',
+    description: 'Built a small Tauri desktop app for my father to manage medical team members, record exam counts, apply a finance-team payout formula, and generate PDF split reports with percentage breakdowns.',
+    hash: 'b6a41d0'
+  },
+  {
     year: '2024',
     title: 'Android app development',
     description: 'Coordinated and designed the "Voci-App" Android application for university coursework, featuring database synchronization via Firebase and custom Mapbox overlays.',
@@ -45,8 +51,8 @@ export const timelineEvents: TimelineEvent[] = [
   },
   {
     year: '2026',
-    title: 'Next personal challenge: Strait of Messina',
-    description: 'Preparing for an open-water swim crossing the Strait of Messina. Translating endurance, planning, and focus from sports to software engineering.',
+    title: 'Next technical challenge: broader systems fluency',
+    description: 'Exploring a wider range of languages, tech stacks, development systems, and emerging technologies with curiosity and a strong appetite for building across different domains.',
     hash: '7e11b8a',
     isEasterEgg: true
   }

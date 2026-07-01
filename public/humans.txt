@@ -1,0 +1,13 @@
+/* TEAM */
+Name: Samuele Poretti
+Role: Computer Science Student & Developer
+Location: Milan, Italy
+GitHub: https://github.com/DreoXDev
+LinkedIn: https://www.linkedin.com/in/samueleporetti/
+
+/* SITE */
+Name: Samuele Poretti Portfolio
+URL: https://dreoxdev.it
+Standards: HTML, CSS, TypeScript
+Tools: Astro, Vue, Tailwind CSS, GSAP
+Language: English

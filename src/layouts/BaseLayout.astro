@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '../data/site'
+import AnalyticsConsent from '../components/analytics/AnalyticsConsent.vue'
 import '../styles/globals.css'
 
 interface Props {
@@ -17,6 +18,7 @@ const {
 const canonicalURL = new URL(Astro.url.pathname, siteConfig.url).toString()
 const assetBase = `${siteConfig.url.replace(/\/$/, '')}${import.meta.env.BASE_URL.replace(/\/$/, '')}`
 const imageURL = ogImage.startsWith('http') ? ogImage : `${assetBase}${ogImage}`
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -42,6 +44,7 @@ const personJsonLd = {
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <link rel="alternate icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}apple-touch-icon.png`} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Canonical URL -->
@@ -52,8 +55,16 @@ const personJsonLd = {
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={siteConfig.author} />
-    <meta name="robots" content="index, follow" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta
+      name="keywords"
+      content="Samuele Poretti, DreoXDev, developer portfolio, computer science student, Astro, Vue, TypeScript, Android, Tauri, Docker, home lab"
+    />
     <meta name="theme-color" content="#050506" />
+    <meta name="color-scheme" content="dark light" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -80,5 +91,6 @@ const personJsonLd = {
   </head>
   <body class="bg-background-dark text-text-main font-mono antialiased min-h-screen flex flex-col">
     <slot />
+    <AnalyticsConsent client:load measurementId={gaMeasurementId} />
   </body>
 </html>

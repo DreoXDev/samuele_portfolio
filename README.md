@@ -1,128 +1,73 @@
 # Samuele Poretti Portfolio
 
-Personal portfolio built with Astro. The current version uses a dark terminal/editor language with animated app-like sections and a separate Home Lab case-study page.
+This repository contains the source code for my personal portfolio: a static website presenting my software projects, technical timeline, home lab work, contact links and downloadable CV.
 
-## Overview
+Live site: [dreoxdev.it](https://dreoxdev.it)
 
-- `_home`: terminal-style introduction
-- `_projects`: code editor and project explorer
-- `_timeline`: horizontal timeline canvas
-- `_contact`: Obsidian-style contact note
-- `/home-lab`: technical case study for the personal home lab
+## About Me
+
+I am Samuele Poretti, a Computer Science student and developer based in Milan, Italy. My work focuses on web interfaces, Android applications, automation tools, self-hosted systems and clean developer workflows.
+
+The portfolio is designed as a developer-environment-inspired experience: a terminal introduction, an editor-style project explorer, a timeline canvas and a markdown-like contact note.
+
+## What Recruiters Can Find
+
+- Selected software projects with live links, source links or deeper technical notes.
+- A chronological timeline of education, development work and technical exploration.
+- A dedicated home lab case study covering self-hosted infrastructure and tooling.
+- Contact links for email, GitHub, institutional GitHub and LinkedIn.
+- A downloadable CV at [`/cv/samuele-poretti-cv.pdf`](https://dreoxdev.it/cv/samuele-poretti-cv.pdf).
+
+## Featured Areas
+
+- **Web development:** Astro, Vue, responsive UI, static output and deployment workflows.
+- **Mobile development:** Android coursework and Firebase-backed application work.
+- **Infrastructure:** Linux server setup, Docker containers, Cloudflare Tunnels, Traefik and Tailscale.
+- **Automation and tooling:** scripts, productivity utilities and developer-focused workflows.
+- **AI exploration:** local LLM and RAG experiments for study and prototyping.
 
 ## Tech Stack
 
-- Astro static output
+- Astro static site generation
 - Vue islands for interactive sections
 - Tailwind CSS v4
-- GSAP for UI transitions
-- JetBrains Mono
-- `@astrojs/sitemap` for sitemap generation
+- GSAP for frame transitions and boot animations
+- TypeScript
+- Nginx-ready static deployment
+- Sitemap, Open Graph metadata, canonical URLs and structured `Person` schema
 
-## Project Structure
+## Site Sections
 
-```text
-src/
-  components/
-    common/       Shared UI primitives
-    hero/         Home terminal frame
-    homelab/      Home Lab page sections
-    interactive/  Frame controller and app switcher
-    layout/       Shell, navbar, footer
-    navigation/   Frame tabs
-    sections/     Projects, timeline, contact
-  data/           Site, projects and timeline content
-  layouts/        Base metadata and document shell
-  lib/            Animation helpers
-  pages/          Astro routes
-  styles/         Global CSS and Tailwind theme
-  types/          Shared TypeScript types
-public/
-  assets/         Static images and icons
-  cv/             Resume PDF location
-```
+- `_home`: terminal-style introduction
+- `_projects`: editor-style project explorer
+- `_timeline`: technical and educational timeline
+- `_contact`: contact note with links and CV
+- `_home_lab`: infrastructure case study
 
-## Local Development
+## Running Locally
 
 ```bash
 npm install
+cp .env.example .env
 npm run dev
 npm run build
-npm run preview
 ```
 
-## Content Updates
+The production build is generated in `dist/`.
 
-### CV
+## Analytics And Privacy
 
-Place the resume PDF at:
+Google Analytics is optional and disabled unless a GA4 Measurement ID is provided:
 
-```text
-public/cv/samuele-poretti-cv.pdf
+```bash
+PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ```
 
-It will be served at:
+The site uses an explicit analytics consent banner. Google Analytics is not loaded before the visitor accepts analytics cookies, and visitors can reopen the privacy control to reject analytics later.
 
-```text
-/cv/samuele-poretti-cv.pdf
-```
+## Contact
 
-When the file is missing, the contact note shows a non-clickable reminder instead of a broken link.
-
-### Projects
-
-Project entries live in:
-
-```text
-src/data/projects.ts
-```
-
-Project types live in:
-
-```text
-src/types/project.ts
-```
-
-### Timeline
-
-Timeline entries live in:
-
-```text
-src/data/timeline.ts
-```
-
-### Contact Links
-
-Global contact and profile links live in:
-
-```text
-src/data/site.ts
-```
-
-Current public links:
-
-- Email: `samuele.poretti2003@gmail.com`
-- GitHub: `https://github.com/DreoXDev`
-- Institutional GitHub: `https://github.com/SPoretti`
-- LinkedIn: `https://www.linkedin.com/in/samueleporetti/`
-
-## SEO
-
-Metadata is centralized in:
-
-```text
-src/layouts/BaseLayout.astro
-src/data/site.ts
-```
-
-The site includes canonical URLs, Open Graph tags, Twitter card tags, a JSON-LD `Person` schema, `robots.txt`, generated sitemap output, favicon assets, Apple touch icon and a global OG image.
-
-## Deployment
-
-The project builds to static files in `dist/`. The repo includes:
-
-- `Dockerfile` for building and serving the static output with Nginx
-- `nginx.conf` for static hosting
-- GitHub workflow files under `.github/`
-
-Run `npm run build` before publishing.
+- Email: [samuele.poretti2003@gmail.com](mailto:samuele.poretti2003@gmail.com)
+- GitHub: [DreoXDev](https://github.com/DreoXDev)
+- Institutional GitHub: [SPoretti](https://github.com/SPoretti)
+- LinkedIn: [Samuele Poretti](https://www.linkedin.com/in/samueleporetti/)

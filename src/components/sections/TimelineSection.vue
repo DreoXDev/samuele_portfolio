@@ -25,8 +25,8 @@
           >
             _timeline
           </a>
-          <a href="/home-lab" class="timeline-global-tab">_home_lab</a>
           <a href="#contact" class="timeline-global-tab" data-nav-target="contact">_contact</a>
+          <a href="/home-lab" class="timeline-global-tab">_home_lab</a>
         </nav>
 
         <div class="timeline-path">workspace/timeline/samuele.canvas</div>
@@ -168,8 +168,11 @@ const visibleEvents = computed(() => timelineEvents)
     display: flex;
     align-items: center;
     gap: 0.35rem;
+    contain: inline-size;
+    max-width: 100%;
     min-width: 0;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }
 
@@ -178,6 +181,7 @@ const visibleEvents = computed(() => timelineEvents)
   }
 
   .timeline-global-tab {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     min-height: 2rem;
@@ -464,6 +468,10 @@ const visibleEvents = computed(() => timelineEvents)
 
     .timeline-topbar {
       grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .timeline-global-tabs {
+      min-width: 0;
     }
 
     .timeline-path {

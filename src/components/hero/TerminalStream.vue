@@ -140,8 +140,11 @@ onUnmounted(() => {
   }
 
   .terminal-stream-line {
-    width: max-content;
+    display: flex;
+    width: 100%;
     max-width: min(88vw, 92rem);
+    min-width: 0;
+    overflow: hidden;
     white-space: nowrap;
     opacity: 0;
     transform: translateY(0.35rem);
@@ -149,8 +152,16 @@ onUnmounted(() => {
   }
 
   .terminal-stream-time {
+    flex: 0 0 auto;
     color: rgba(113, 113, 122, 0.68);
     margin-right: 0.65rem;
+  }
+
+  .terminal-stream-output,
+  .terminal-stream-command {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .terminal-stream-output {
@@ -184,6 +195,10 @@ onUnmounted(() => {
     .terminal-stream-lines {
       gap: 0.26rem;
       font-size: 0.62rem;
+    }
+
+    .terminal-stream-line {
+      max-width: calc(100vw - 1.7rem);
     }
   }
 </style>

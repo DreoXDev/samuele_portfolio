@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
+# Keep public portfolio assets, CV and project pages available to search engines
+# and research/AI crawlers that respect robots.txt.
+Allow: /assets/
+Allow: /cv/
+Allow: /home-lab/
+
 Sitemap: https://dreoxdev.it/sitemap-index.xml
+Host: https://dreoxdev.it

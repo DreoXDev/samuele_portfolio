@@ -94,5 +94,43 @@ export const projects: Project[] = [
     links: {},
     highlights: ['Semantic vector search integration', 'Custom Obsidian templates', 'Syncing via Git version control'],
     images: ['/assets/images/projects/ai-rag-placeholder.svg']
+  },
+  {
+    title: 'Study Timer',
+    slug: 'study-timer',
+    fileName: 'study-timer.tauri',
+    folder: 'experiments',
+    year: '2026',
+    category: 'experiment',
+    status: 'experimental',
+    featured: false,
+    summary: 'Desktop focus companion built with Tauri and Vue to track study sessions, tasks, stats and local productivity data in a calm secondary-screen interface.',
+    description: 'An experimental desktop app for focused study sessions, combining a minimalist timer, session history, task sidebars, stats dashboards, export tools, SQLite persistence and optional Supabase-backed sync.',
+    role: 'Desktop app development, local-first data design, UI/UX',
+    stack: ['Tauri 2', 'Rust', 'Vue 3', 'TypeScript', 'Pinia', 'Tailwind CSS', 'SQLite', 'Supabase'],
+    links: {
+      github: 'https://github.com/DreoXDev/StudyTimer'
+    },
+    highlights: ['Local-first SQLite persistence', 'CSV/JSON/Obsidian Markdown export', 'Focus timer and productivity dashboard'],
+    images: ['/assets/images/projects/ai-rag-placeholder.svg']
+  },
+  {
+    title: 'HCI Project Toolkit',
+    slug: 'hci-project-toolkit',
+    fileName: 'hci-project-toolkit.py',
+    folder: 'experiments',
+    year: '2026',
+    category: 'experiment',
+    status: 'experimental',
+    featured: false,
+    summary: 'Forked and updated Python toolkit for a university Human-Computer Interaction project comparing Deliveroo and Glovo user experiences.',
+    description: 'A university HCI support tool adapted to generate analysis artifacts, charts, tables, written report sections, presentation decks and final PDF outputs from structured project data.',
+    role: 'Toolkit maintenance, data pipeline updates, report automation',
+    stack: ['Python', 'Jupyter Notebook', 'Pandas', 'Matplotlib', 'PPTX', 'PDF export'],
+    links: {
+      github: 'https://github.com/DreoXDev/HCI-project'
+    },
+    highlights: ['Forked and updated university toolkit', 'Automated charts and report outputs', 'Slides and PDF generation workflow'],
+    images: ['/assets/images/projects/ai-rag-placeholder.svg']
   }
 ]

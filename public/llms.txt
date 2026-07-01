@@ -1,0 +1,25 @@
+# Samuele Poretti Portfolio
+
+This site is the public portfolio of Samuele Poretti, a Computer Science student and developer based in Milan, Italy.
+
+Primary URL: https://dreoxdev.it
+
+## Important Pages
+
+- Home and portfolio overview: https://dreoxdev.it/
+- Home lab case study: https://dreoxdev.it/home-lab/
+- CV PDF: https://dreoxdev.it/cv/samuele-poretti-cv.pdf
+- Sitemap index: https://dreoxdev.it/sitemap-index.xml
+
+## Content Summary
+
+The site presents selected software projects, a technical timeline, a home lab infrastructure case study, contact links and a downloadable CV.
+
+Key topics include Astro, Vue, TypeScript, Android development, Tauri desktop applications, Docker, Linux server administration, Cloudflare Tunnels, Traefik, Tailscale, local-first tools, automation workflows and AI/RAG experiments.
+
+## Contact
+
+- Email: samuele.poretti2003@gmail.com
+- GitHub: https://github.com/DreoXDev
+- Institutional GitHub: https://github.com/SPoretti
+- LinkedIn: https://www.linkedin.com/in/samueleporetti/

@@ -24,4 +24,16 @@ import TerminalWindow from './TerminalWindow.astro'
   .terminal-frame {
     height: calc(100svh - clamp(1.5rem, 4vw, 3rem));
   }
+
+  @media (max-width: 760px) {
+    .terminal-hero {
+      padding: 0;
+      overflow: visible;
+    }
+
+    .terminal-frame {
+      height: auto;
+      min-height: 100svh;
+    }
+  }
 </style>

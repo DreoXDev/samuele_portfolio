@@ -124,8 +124,9 @@ import HeroIdentity from './HeroIdentity.astro'
 
   @media (max-width: 760px) {
     .terminal-window {
-      height: 100%;
-      border-radius: 0.8rem;
+      min-height: 100svh;
+      border-width: 0 0 1px;
+      border-radius: 0;
     }
 
     .terminal-titlebar {
@@ -144,8 +145,11 @@ import HeroIdentity from './HeroIdentity.astro'
     .terminal-body {
       align-items: center;
       justify-content: center;
+      min-height: calc(100svh - 6.8rem);
       padding-top: clamp(1.5rem, 9vh, 4rem);
+      padding-bottom: 2rem;
       padding-inline: 1.25rem;
+      overflow: hidden;
     }
 
     .terminal-body::before {

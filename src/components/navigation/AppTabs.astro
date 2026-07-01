@@ -10,8 +10,8 @@ const tabs = [
   { key: 'home', label: '_home', href: '#home', target: 'home' },
   { key: 'projects', label: '_projects', href: '#projects', target: 'projects' },
   { key: 'timeline', label: '_timeline', href: '#timeline', target: 'timeline' },
-  { key: 'home_lab', label: '_home_lab', href: '/home-lab' },
   { key: 'contact', label: '_contact', href: '#contact', target: 'contact' },
+  { key: 'home_lab', label: '_home_lab', href: '/home-lab' },
 ]
 ---
 
@@ -34,8 +34,11 @@ const tabs = [
     display: flex;
     align-items: center;
     gap: 0.35rem;
+    contain: inline-size;
+    max-width: 100%;
     min-width: 0;
     overflow-x: auto;
+    overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }
 
@@ -44,6 +47,7 @@ const tabs = [
   }
 
   .app-tab {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     min-height: 2rem;
@@ -83,6 +87,7 @@ const tabs = [
     .app-tabs {
       order: 2;
       width: 100%;
+      min-width: 0;
       padding-top: 0.55rem;
     }
 
